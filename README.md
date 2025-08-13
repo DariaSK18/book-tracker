@@ -1,4 +1,5 @@
-# book-tracker
+# Mr. Bookich (mr-bookich)
+
 <!-- Banner -->
 <p align="center">
   <img src="assets/banner.png" alt="Mr. Bookich" width="800"/>
@@ -16,6 +17,7 @@
 ---
 
 ## ✨ Features
+
 - 📖 Add, edit and delete books
 - 📊 Track reading progress and stats
 - 🏆 Set reading goals
@@ -25,6 +27,7 @@
 ---
 
 ## 🖼 Screenshots
+
 <p align="center">
   <img src="assets/screenshot1.png" width="45%" />
   <img src="assets/screenshot2.png" width="45%" />
@@ -33,6 +36,7 @@
 ---
 
 ## 🚀 Tech Stack
+
 - **Frontend:** Vue 3 + Quasar Framework
 - **Bundler:** Vite
 - **Styling:** SCSS
@@ -42,6 +46,7 @@
 ---
 
 ## 📦 Installation
+
 ```bash
 # Clone repository
 git clone https://github.com/username/book-tracker.git
@@ -54,3 +59,4 @@ npm install
 
 # Start development server
 quasar dev
+```
