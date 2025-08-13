@@ -2,7 +2,7 @@
 
 <!-- Banner -->
 <p align="center">
-  <img src="assets/banner.png" alt="Mr. Bookich" width="800"/>
+  <img src="./src/assets/bookich.jpg" alt="Mr. Bookich" width="800"/>
 </p>
 
 <h1 align="center">📚 Mr. Bookich</h1>
@@ -29,8 +29,8 @@
 ## 🖼 Screenshots
 
 <p align="center">
-  <img src="assets/screenshot1.png" width="45%" />
-  <img src="assets/screenshot2.png" width="45%" />
+  <img src="./src/assets/bookich.jpg" width="45%" />
+  <img src="./src/assets/bookich-2.jpg" width="45%" />
 </p>
 
 ---
