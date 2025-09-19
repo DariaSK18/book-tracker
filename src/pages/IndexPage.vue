@@ -1,10 +1,8 @@
 <template>
   <q-page class="flex flex-center">
-    <img
-      alt="Quasar logo"
-      src="~assets/quasar-logo-vertical.svg"
-      style="width: 200px; height: 200px"
-    />
+    <p>{{ $t('menu.home') }}</p>
+    <font-awesome-icon icon="fa-solid fa-user" />
+    <font-awesome-icon :icon="['fab', 'github']" />
   </q-page>
 </template>
 
