@@ -3,7 +3,16 @@
     <q-header elevated>
       <q-toolbar>
         <q-btn flat dense round icon="menu" aria-label="Menu" @click="toggleLeftDrawer" />
-        <q-toolbar-title>MR. Bookich</q-toolbar-title>
+        <img src="~assets/logo.png" width="60" height="40" alt="logo" class="q-ma-md logo" />
+        <q-toolbar-title> MR. Bookich </q-toolbar-title>
+        <div class="q-ma-md">
+          <q-icon name="account_circle" class="q-ma-sm" size="lg"/>
+          <span>LogIn</span>
+        </div>
+        <!-- <div class="q-ma-md"> -->
+        <q-icon name="dark_mode" />
+        <q-icon name="light_mode" />
+        <!-- </div> -->
       </q-toolbar>
     </q-header>
 
@@ -12,6 +21,8 @@
         <q-item-label header>Your collections</q-item-label>
 
         <EssentialLink v-for="link in linksList" :key="link.title" v-bind="link" />
+        <q-icon name="language" />
+        <q-icon name="account_box" />
       </q-list>
     </q-drawer>
 
@@ -19,7 +30,18 @@
       <router-view />
     </q-page-container>
     <q-footer>
-      footer
+      <div class="row justify-evenly items-center">
+        <BaseBtn icon="home" :to="{ name: 'home' }" />
+        <!-- <q-btn flat icon="menu_book" size="lg" :to="{ name: 'home' }" /> -->
+        <BaseBtn icon="auto_stories" :to="{ name: 'home' }" />
+        <!-- <q-btn dense push icon="add" size="lg" :to="{ name: 'home' }" /> -->
+        <BaseBtn
+        :flat="false"
+        round
+        icon="add_circle" size="xl" :to="{ name: 'home' }" />
+        <BaseBtn icon="task_alt" :to="{ name: 'home' }" />
+        <BaseBtn icon="bar_chart" :to="{ name: 'home' }" />
+      </div>
     </q-footer>
   </q-layout>
 </template>
@@ -27,6 +49,7 @@
 <script setup>
 import { ref } from 'vue'
 import EssentialLink from 'components/EssentialLink.vue'
+import BaseBtn from "../components/BaseBtn.vue";
 
 const linksList = [
   {
@@ -61,3 +84,8 @@ function toggleLeftDrawer() {
   leftDrawerOpen.value = !leftDrawerOpen.value
 }
 </script>
+<style scss scoped>
+.logo {
+  border-radius: 20px;
+}
+</style>
