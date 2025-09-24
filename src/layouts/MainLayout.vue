@@ -4,15 +4,17 @@
       <q-toolbar>
         <q-btn flat dense round icon="menu" aria-label="Menu" @click="toggleLeftDrawer" />
         <img src="~assets/logo.png" width="60" height="40" alt="logo" class="q-ma-md logo" />
-        <q-toolbar-title> MR. Bookich </q-toolbar-title>
+        <q-toolbar-title> Mr. Bookich </q-toolbar-title>
         <div class="q-ma-md">
-          <q-icon name="account_circle" class="q-ma-sm" size="lg"/>
-          <span>LogIn</span>
+
+          <q-btn
+          flat
+          rounded
+          :to="{name:'login'}">
+          <q-icon name="account_circle" class="q-ma-sm" size="sm" />
+          LogIn
+        </q-btn>
         </div>
-        <!-- <div class="q-ma-md"> -->
-        <q-icon name="dark_mode" />
-        <q-icon name="light_mode" />
-        <!-- </div> -->
       </q-toolbar>
     </q-header>
 
@@ -23,6 +25,10 @@
         <EssentialLink v-for="link in linksList" :key="link.title" v-bind="link" />
         <q-icon name="language" />
         <q-icon name="account_box" />
+        <!-- <div class="q-ma-md"> -->
+        <q-icon name="dark_mode" />
+        <q-icon name="light_mode" />
+        <!-- </div> -->
       </q-list>
     </q-drawer>
 
@@ -33,14 +39,18 @@
       <div class="row justify-evenly items-center">
         <BaseBtn icon="home" :to="{ name: 'home' }" />
         <!-- <q-btn flat icon="menu_book" size="lg" :to="{ name: 'home' }" /> -->
-        <BaseBtn icon="auto_stories" :to="{ name: 'home' }" />
+        <BaseBtn icon="auto_stories" :to="{ name: 'books' }" />
         <!-- <q-btn dense push icon="add" size="lg" :to="{ name: 'home' }" /> -->
         <BaseBtn
-        :flat="false"
-        round
-        icon="add_circle" size="xl" :to="{ name: 'home' }" />
-        <BaseBtn icon="task_alt" :to="{ name: 'home' }" />
-        <BaseBtn icon="bar_chart" :to="{ name: 'home' }" />
+          class="base-btn-pushed"
+          :flat="false"
+          round
+          icon="add_circle"
+          size="xl"
+          :to="{ name: 'addBook' }"
+        />
+        <BaseBtn icon="task_alt" :to="{ name: 'goals' }" />
+        <BaseBtn icon="bar_chart" :to="{ name: 'stats' }" />
       </div>
     </q-footer>
   </q-layout>
@@ -49,7 +59,7 @@
 <script setup>
 import { ref } from 'vue'
 import EssentialLink from 'components/EssentialLink.vue'
-import BaseBtn from "../components/BaseBtn.vue";
+import BaseBtn from '../components/BaseBtn.vue'
 
 const linksList = [
   {
@@ -84,8 +94,15 @@ function toggleLeftDrawer() {
   leftDrawerOpen.value = !leftDrawerOpen.value
 }
 </script>
-<style scss scoped>
+<style lang="scss" scoped>
 .logo {
   border-radius: 20px;
+}
+.base-btn-pushed {
+  margin-top: -30px;
+  background: $primary;
+  // background: #66adf4;
+  border-radius: 50%;
+  // border: 1px solid #66adf4;
 }
 </style>
