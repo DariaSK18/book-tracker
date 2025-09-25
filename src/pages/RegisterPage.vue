@@ -4,7 +4,7 @@
     <Form :validation-schema="schema" @submit="onSubmit">
       <Field name="name" v-slot="{ field, errors }">
         <q-input
-          v-bind="field"
+          v-model="field.value"
           type="name"
           placeholder="Username"
           outlined
@@ -18,7 +18,7 @@
       </Field>
       <Field name="email" v-slot="{ field, errors }">
         <q-input
-          v-bind="field"
+          v-model="field.value"
           type="email"
           placeholder="E-mail"
           outlined
@@ -32,7 +32,7 @@
       </Field>
       <Field name="password" v-slot="{ field, errors }">
         <q-input
-          v-bind="field"
+          v-model="field.value"
           type="password"
           placeholder="Password"
           outlined
@@ -44,9 +44,9 @@
           </template>
         </q-input>
       </Field>
-      <Field name="password" v-slot="{ field, errors }">
+      <Field name="confirmation" v-slot="{ field, errors }">
         <q-input
-          v-bind="field"
+          v-model="field.value"
           type="password"
           placeholder="Confirm Password"
           outlined
@@ -69,6 +69,14 @@
 
 <script setup>
 import { Form, Field } from 'vee-validate'
+import * as yup from 'yup'
+
+const schema = yup.object({
+  name: yup.string().required(),
+  email: yup.string().required().email(),
+  password: yup.string().required().min(6),
+  confirmation: yup.string().required().min(6),
+})
 </script>
 
 <style lang="scss" scoped>
@@ -80,9 +88,13 @@ import { Form, Field } from 'vee-validate'
   Form,
   .q-item__label {
     text-align: center;
+    // margin: 1rem;
   }
   Form {
     padding-bottom: 1rem;
+  }
+  .q-field--with-bottom {
+    padding-bottom: 2rem;
   }
 }
 </style>

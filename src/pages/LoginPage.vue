@@ -1,15 +1,19 @@
 <template>
   <q-page-container class="container" style="padding-top: 0">
     <h4>LOGIN</h4>
-    <Form :validation-schema="schema" @submit="onSubmit">
+    <Form :validation-schema="schema"
+    :initial-values="initialValues"
+     @submit="onSubmit">
       <Field name="email" v-slot="{ field, errors }">
         <q-input
-          v-bind="field"
+          v-model="field.value"
           type="email"
           placeholder="Email"
           outlined
           :error="errors.length > 0"
           :error-message="errors[0]"
+          @blur="field.blur"
+          @input="field.value = $event"
         >
           <template v-slot:prepend>
             <q-icon name="email" />
@@ -18,20 +22,21 @@
       </Field>
       <Field name="password" v-slot="{ field, errors }">
         <q-input
-          v-bind="field"
+          v-model="field.value"
           type="password"
           placeholder="Password"
           outlined
           :error="errors.length > 0"
           :error-message="errors[0]"
+          @blur="field.blur"
+          @input="field.value = $event"
         >
           <template v-slot:prepend>
             <q-icon name="lock" />
           </template>
         </q-input>
       </Field>
-      <q-card-actions
-      class="justify-evenly">
+      <q-card-actions class="justify-evenly">
         <q-btn class="form-btn" label="LOGIN" type="submit" color="primary" />
         <q-btn class="form-btn" label="CANCEL" color="primary" :to="{ name: 'home' }" />
       </q-card-actions>
@@ -40,8 +45,7 @@
       <q-item-label
         >No account?<q-btn flat label="Create one" :to="{ name: 'register' }"
       /></q-item-label>
-      <q-btn @click="onLogin"
-      class="q-ma-md">
+      <q-btn @click="onLogin" class="q-ma-md">
         <!-- <font-awesome-icon
        :icon="[ 'fab', 'google' ]" class="q-ma-sm"/> -->
         <q-img
@@ -59,18 +63,28 @@
 </template>
 
 <script setup>
+// import { ref } from "vue";
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
 import { Form, Field } from 'vee-validate'
-// import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-// import * as yup from 'yup'
+import * as yup from 'yup'
 
 const router = useRouter()
 const authStore = useAuthStore()
 
-// function onCancel() {
-//   router.push({ name: 'home' })
+// const email = ref('')
+
+// const initialValues = {
+//   email: '',
+//   password: ''
 // }
+
+const onSubmit = (values) => {
+  console.log('Form submitted:', values)
+  // здесь можно вызвать функцию логина, например:
+  // authStore.signInWithWithEmailAndPassword(values.email, values.password)
+}
+
 async function onLogin() {
   try {
     await authStore.loginWithGoogleAccount()
@@ -81,6 +95,11 @@ async function onLogin() {
     console.error(error.message)
   }
 }
+
+const schema = yup.object({
+  email: yup.string().required().email(),
+  password: yup.string().required().min(6),
+})
 </script>
 
 <style lang="scss" scoped>
@@ -93,12 +112,15 @@ async function onLogin() {
   .q-item__label {
     text-align: center;
   }
-  Form{
+  Form {
     padding-bottom: 1rem;
     // margin: 0 auto;
   }
   .form-btn {
     width: 7rem;
+  }
+  .q-field--with-bottom {
+    padding-bottom: 2rem;
   }
 }
 </style>
