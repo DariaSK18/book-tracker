@@ -3,7 +3,7 @@
     <q-header elevated>
       <q-toolbar>
         <q-btn flat dense round icon="menu" aria-label="Menu" @click="toggleLeftDrawer" />
-        <img src="~assets/logo.png" width="60" height="40" alt="logo" class="q-ma-md logo" />
+        <q-img src="~assets/logo.png"  :ratio="3/2" cover alt="logo" class="q-ma-md logo" />
         <q-toolbar-title> Mr. Bookich </q-toolbar-title>
         <div class="q-ma-md">
 
@@ -96,7 +96,8 @@ function toggleLeftDrawer() {
 </script>
 <style lang="scss" scoped>
 .logo {
-  border-radius: 20px;
+  border-radius: 18px;
+  width: 60px;
 }
 .base-btn-pushed {
   margin-top: -30px;

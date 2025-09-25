@@ -33,8 +33,8 @@ export default defineRouter(function (/* { store, ssrContext } */) {
     history: createHistory(process.env.VUE_ROUTER_BASE),
   })
 
-//   Router.beforeEach((to) => {
-//   if (to.meta.requiresAuth && !AuthenticatorAssertionResponse.isLogedIn()) {
+//   Router.beforeEach(async (to) => {
+//   if (to.meta?.requiresAuth) !AuthenticatorAssertionResponse.isLogedIn()) {
 //     return {
 //       name: 'login',
 //       query: { redirect: to.fullPath },
