@@ -3,6 +3,8 @@ import { defineStore } from 'pinia'
 import { useGeneralStore } from './general'
 import { useUsersStore } from './users'
 import authOperations from './helpers/GoogleAuthOperations.js'
+import { onAuthStateChanged } from 'firebase/auth'
+import { auth } from 'src/boot/firebase-config'
 
 export const useAuthStore = defineStore('auth', () => {
   const generalStore = useGeneralStore()
@@ -12,32 +14,54 @@ export const useAuthStore = defineStore('auth', () => {
   const user = ref(null)
 
   const getUser = computed(() => user.value)
+  // const getCurrentUserData = computed(() => {
+  //   const uid = user.value?.uid
+  //   if (!uid) return null
+  //   return usersStore.getCurrentUser
+  // })
 
-  async function signUpWithWithEmailAndPassword(email, password) {
-    generalApiOperation({
-      operation: () => authOperations.signUpWithWithEmailAndPassword({ email, password }),
-    }).then(async (res) => {
-      user.value = res
-
-      await usersStore.addUserWithCustomId({
-        id: user?.value?.uid,
-        data: {
-          email,
-          permissions: {
-            create: false,
-            read: true,
-            update: false,
-            delete: false,
-          },
-        },
-      })
+  function initAuthListener() {
+    onAuthStateChanged(auth, (firebaseUser) => {
+      if (firebaseUser) {
+        user.value = firebaseUser
+      } else {
+        user.value = null
+      }
     })
   }
 
-  async function signInWithWithEmailAndPassword(email, password) {
+  async function signUpWithEmailAndPasswordFn(email, password) {
+    return generalApiOperation({
+      operation: () => authOperations.signUpWithEmailAndPasswordFn({ email, password }),
+    })
+  }
+  // async function signUpWithEmailAndPasswordFn(email, password) {
+  //   // console.log(email, password);
+  //   generalApiOperation({
+  //     operation: () => authOperations.signUpWithEmailAndPasswordFn({ email, password }),
+  //   }).then(async (res) => {
+  //     user.value = res
+
+  //     await usersStore.addUserWithCustomId({
+  //       id: user?.value?.uid,
+  //       data: {
+  //         email,
+  //         permissions: {
+  //           create: false,
+  //           read: true,
+  //           update: false,
+  //           delete: false,
+  //         },
+  //       },
+  //     })
+  //   })
+  // }
+
+  async function signInWithEmailAndPasswordFn(email, password) {
+    // console.log(email, password)
     return new Promise((resolve, reject) => {
       generalApiOperation({
-        operation: () => authOperations.signInWithWithEmailAndPassword({ email, password }),
+        operation: () => authOperations.signInWithEmailAndPasswordFn({ email, password }),
       })
         .then((res) => {
           user.value = res
@@ -95,11 +119,13 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   return {
-    signUpWithWithEmailAndPassword,
-    signInWithWithEmailAndPassword,
+    signUpWithEmailAndPasswordFn,
+    signInWithEmailAndPasswordFn,
     loginWithGoogleAccount,
     logOut,
     getUser,
     getAuthData,
+    initAuthListener,
+    // getCurrentUserData,
   }
 })

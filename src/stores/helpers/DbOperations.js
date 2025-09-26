@@ -4,6 +4,7 @@ import {
   doc,
   collection,
   getDocs,
+  setDoc,
   getDoc,
   addDoc,
   deleteDoc,
@@ -86,6 +87,14 @@ class DbOperations {
         })
     })
   }
+  addItemWithCustomId(id, data) {
+  return new Promise((resolve, reject) => {
+    const docRef = doc(this.dbCollection, id)
+    setDoc(docRef, data)
+      .then(() => resolve({ id, ...data }))
+      .catch((error) => reject(error))
+  })
+}
   addItem(item) {
     return new Promise((resolve, reject) => {
       addDoc(this.dbCollection, item)

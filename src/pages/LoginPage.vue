@@ -1,51 +1,52 @@
 <template>
   <q-page-container class="container" style="padding-top: 0">
     <h4>LOGIN</h4>
-    <Form :validation-schema="schema"
-    :initial-values="initialValues"
-     @submit="onSubmit">
-      <Field name="email" v-slot="{ field, errors }">
-        <q-input
-          v-model="field.value"
-          type="email"
-          placeholder="Email"
-          outlined
-          :error="errors.length > 0"
-          :error-message="errors[0]"
-          @blur="field.blur"
-          @input="field.value = $event"
-        >
-          <template v-slot:prepend>
-            <q-icon name="email" />
-          </template>
-        </q-input>
-      </Field>
-      <Field name="password" v-slot="{ field, errors }">
-        <q-input
-          v-model="field.value"
-          type="password"
-          placeholder="Password"
-          outlined
-          :error="errors.length > 0"
-          :error-message="errors[0]"
-          @blur="field.blur"
-          @input="field.value = $event"
-        >
-          <template v-slot:prepend>
-            <q-icon name="lock" />
-          </template>
-        </q-input>
-      </Field>
+    <q-form @submit.prevent.stop="onSubmit" :validation-schema="schema">
+      <q-input
+        v-model="formData.email"
+        for="email"
+        label="Email"
+        type="email"
+        outlined
+        lazy-rules="ondemand"
+        :rules="[(val) => !!val || 'Field is required']"
+        :error="!!errors.email"
+        :error-message="errors.email"
+        @blur="validateField('email')"
+      >
+        <template v-slot:prepend>
+          <q-icon name="email" />
+        </template>
+      </q-input>
+      <q-input
+        v-model="formData.password"
+        for="password"
+        label="Password"
+        type="password"
+        outlined
+        lazy-rules="ondemand"
+        :error="!!errors.password"
+        :error-message="errors.password"
+        :rules="[
+          (val) => !!val || 'Field is required',
+          (val) => val.length >= 6 || 'Please use minimum 6 characters',
+        ]"
+        @blur="validateField('password')"
+      >
+        <template v-slot:prepend>
+          <q-icon name="lock" />
+        </template>
+      </q-input>
       <q-card-actions class="justify-evenly">
         <q-btn class="form-btn" label="LOGIN" type="submit" color="primary" />
         <q-btn class="form-btn" label="CANCEL" color="primary" :to="{ name: 'home' }" />
       </q-card-actions>
-    </Form>
+    </q-form>
     <q-card-actions class="justify-center column">
       <q-item-label
         >No account?<q-btn flat label="Create one" :to="{ name: 'register' }"
       /></q-item-label>
-      <q-btn @click="onLogin" class="q-ma-md">
+      <q-btn @click="onLoginWithGoogle" class="q-ma-md">
         <!-- <font-awesome-icon
        :icon="[ 'fab', 'google' ]" class="q-ma-sm"/> -->
         <q-img
@@ -63,43 +64,66 @@
 </template>
 
 <script setup>
-// import { ref } from "vue";
-import { useRouter } from 'vue-router'
+import { reactive } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
-import { Form, Field } from 'vee-validate'
 import * as yup from 'yup'
 
 const router = useRouter()
+const route = useRoute()
 const authStore = useAuthStore()
 
-// const email = ref('')
+const formData = reactive({
+  email: '',
+  password: '',
+})
+const errors = reactive({
+  email: '',
+  password: '',
+})
 
-// const initialValues = {
-//   email: '',
-//   password: ''
-// }
+const schema = yup.object({
+  email: yup.string().required('Email is required').email('Invalid email'),
+  password: yup.string().required('Password is required').min(6, 'At least 6 chars'),
+})
 
-const onSubmit = (values) => {
-  console.log('Form submitted:', values)
-  // здесь можно вызвать функцию логина, например:
-  // authStore.signInWithWithEmailAndPassword(values.email, values.password)
+const validateField = async (field) => {
+  try {
+    await schema.validateAt(field, formData)
+    errors[field] = ''
+  } catch (err) {
+    errors[field] = err.message
+  }
 }
 
-async function onLogin() {
+const onSubmit = async () => {
+  // console.log('submit')
+  try {
+    await schema.validate(formData, { abortEarly: false })
+    // console.log('formData', formData)
+    await authStore.signInWithEmailAndPasswordFn(formData.email, formData.password)
+    const redirect = route.query.redirect || { name: 'home' }
+    router.push(redirect)
+  } catch (err) {
+    if (err.inner) {
+      console.log(err)
+      err.inner.forEach((e) => {
+        errors[e.path] = e.message
+      })
+    }
+  }
+}
+
+async function onLoginWithGoogle() {
   try {
     await authStore.loginWithGoogleAccount()
-    router.push({
-      name: 'login',
-    })
+    console.log(authStore.getUser)
+    const redirect = route.query.redirect || { name: 'home' }
+    router.push(redirect)
   } catch (error) {
     console.error(error.message)
   }
 }
-
-const schema = yup.object({
-  email: yup.string().required().email(),
-  password: yup.string().required().min(6),
-})
 </script>
 
 <style lang="scss" scoped>

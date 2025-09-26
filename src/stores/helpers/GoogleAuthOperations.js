@@ -29,7 +29,7 @@ class GoogleAuthOperations {
         })
     })
   }
- signUpWithWithEmailAndPassword({ email, password }) {
+ signUpWithEmailAndPasswordFn({ email, password }) {
     return new Promise((resolve, reject) => {
       if (!email || !password) reject(false)
       else {
@@ -44,7 +44,7 @@ class GoogleAuthOperations {
       }
     })
   }
- signInWithWithEmailAndPassword({ email, password }) {
+ signInWithEmailAndPasswordFn({ email, password }) {
     return new Promise((resolve, reject) => {
       if (!email || !password) reject(false)
       else {

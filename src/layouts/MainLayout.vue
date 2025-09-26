@@ -3,17 +3,18 @@
     <q-header elevated>
       <q-toolbar>
         <q-btn flat dense round icon="menu" aria-label="Menu" @click="toggleLeftDrawer" />
-        <q-img src="~assets/logo.png"  :ratio="3/2" cover alt="logo" class="q-ma-md logo" />
+        <q-img src="~assets/logo.png" :ratio="3 / 2" cover alt="logo" class="q-ma-md logo" />
         <q-toolbar-title> Mr. Bookich </q-toolbar-title>
-        <div class="q-ma-md">
-
-          <q-btn
-          flat
-          rounded
-          :to="{name:'login'}">
+        <!-- {{ getUser }} -->
+        <div class="q-ma-md" v-if="!getUser">
+          <q-btn flat rounded :to="{ name: 'login' }">
+            <q-icon name="account_circle" class="q-ma-sm" size="sm" />
+            LogIn
+          </q-btn>
+        </div>
+        <div class="q-ma-md" v-else>
           <q-icon name="account_circle" class="q-ma-sm" size="sm" />
-          LogIn
-        </q-btn>
+          {{ getUser.displayName || getUser.email }}
         </div>
       </q-toolbar>
     </q-header>
@@ -30,6 +31,7 @@
         <q-icon name="light_mode" />
         <!-- </div> -->
       </q-list>
+      <q-btn label="Logout" color="primary" rounded="" class="q-ma-lg" @click="onLogout" />
     </q-drawer>
 
     <q-page-container>
@@ -57,9 +59,16 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import EssentialLink from 'components/EssentialLink.vue'
 import BaseBtn from '../components/BaseBtn.vue'
+import { useAuthStore } from 'src/stores/auth'
+import { onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+
+const auth = useAuthStore()
+const getUser = computed(() => auth.getUser)
+const router = useRouter()
 
 const linksList = [
   {
@@ -93,6 +102,35 @@ const leftDrawerOpen = ref(false)
 function toggleLeftDrawer() {
   leftDrawerOpen.value = !leftDrawerOpen.value
 }
+
+function onLogout() {
+  auth.logOut()
+  router.push({
+    name: 'home',
+  })
+}
+
+onMounted(() => {
+  auth.initAuthListener()
+})
+
+// watch: {
+//     '$i18n.locale'(newLocale) {
+//       localStorage.setItem('locale', newLocale)
+//     },
+//   },
+//   created() {
+//     this.$i18n.locale = localStorage.getItem('locale') || 'en'
+//     if (localStorage.getItem('locale') !== this.$i18n.locale)
+//       localStorage.setItem('locale', this.$i18n.locale)
+//     const self = this
+//     window.addEventListener('storage', function () {
+//       if (self.$i18n.locale !== localStorage.getItem('locale')) {
+//         self.$i18n.locale = localStorage.getItem('locale')
+//         self.$router.go()
+//       }
+//     })
+//   }
 </script>
 <style lang="scss" scoped>
 .logo {

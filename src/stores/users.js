@@ -17,6 +17,8 @@ export const useUsersStore = defineStore('users', () => {
   }
 
   async function loadUserById(userId) {
+    console.log(userId)
+
     if (userId) {
       currentUser.value = await generalApiOperation({
         operation: () => collectionDB.getItemById(userId),
@@ -24,19 +26,36 @@ export const useUsersStore = defineStore('users', () => {
       return currentUser.value
     }
   }
-  async function addUser(userData) {
-    currentUser.value = await generalApiOperation({
-      operation: () => collectionDB.addItem(userData),
-    })
-  }
+  // ---------------------
+  // не понятно зачем это функция, если есть addUserWithCustomId
+  // ---------------------
+  // async function addUser(userData) {
+  //   console.log(userData);
+
+  //   currentUser.value = await generalApiOperation({
+  //     operation: () => collectionDB.addItem(userData),
+  //   })
+  // }
 
   async function addUserWithCustomId({ id, data }) {
+    console.log('id', id, 'data', data)
+
     const userObj = await loadUserById(id)
     if (!userObj?.email) {
-      currentUser.value = await generalApiOperation({
-        operation: () => collectionDB.addItemWithCustomId(id, data),
-      })
+      console.log('userObj', userObj)
+      try {
+        currentUser.value = await generalApiOperation({
+          operation: () => collectionDB.addItemWithCustomId(id, data),
+        })
+        console.log('User added to Firestore', currentUser.value)
+      } catch (err) {
+        console.error('Failed to add user to Firestore:', err)
+        throw err
+      }
+    } else {
+      currentUser.value = userObj
     }
+    return currentUser.value
   }
 
   async function updateUser({ id, data }) {
@@ -62,7 +81,7 @@ export const useUsersStore = defineStore('users', () => {
     usersList,
     loadUsersList,
     loadUserById,
-    addUser,
+    // addUser,
     addUserWithCustomId,
     deleteUser,
     updateUser,
