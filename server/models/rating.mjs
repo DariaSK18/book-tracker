@@ -28,6 +28,12 @@ Rating.init(
     freezeTableName: true,
     underscored: true,
     modelName: "rating",
+    indexes: [
+      {
+        unique: true,
+        fields: ["user_id", "book_id"],
+      },
+    ],
   }
 );
 
