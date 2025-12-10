@@ -27,7 +27,7 @@ Note.init(
         key: "id",
       },
     },
-    text: {
+    content: {
       type: DataTypes.TEXT,
       allowNull: false,
     },
