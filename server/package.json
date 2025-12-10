@@ -1,0 +1,20 @@
+{
+  "name": "book-tracker",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.mjs",
+    "dev": "nodemon server.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DariaSK18/book-tracker.git"
+  },
+  "author": "Daria Steblovska",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DariaSK18/book-tracker/issues"
+  },
+  "homepage": "https://github.com/DariaSK18/book-tracker#readme",
+  "description": ""
+}
