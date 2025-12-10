@@ -1,0 +1,12 @@
+# macOS
+.DS_Store
+
+# enviroment
+*.env
+
+
+#node_modules
+*/node_modules
+node_modules/
+
+package-lock.json
