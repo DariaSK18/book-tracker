@@ -14,10 +14,10 @@ const router = Router();
 
 router
   .route("/")
-  .get(userController.getAllUsers)
-  .post(checkSchema(signupValidation), validate, authController.createUser);
+  .get(userController.getAllUsers) // ok
+  .post(checkSchema(signupValidation), validate, authController.createUser); // ok
 
-router.route("/:id").get(userController.getOneUser);
+router.route("/:id").get(userController.getOneUser); //ok
 
 router
   .route("/me")
@@ -28,12 +28,12 @@ router
   }
   res.setHeader("Cache-Control", "no-store");
   res.json({ user: req.user });
-} )
-  .patch(isAuth, checkSchema(userPatch), validate, userController.updateUser) 
-  .delete(isAuth, userController.deleteUser);
+} ) // ok
+  .patch(isAuth, checkSchema(userPatch), validate, userController.updateUser) // ok 
+  .delete(isAuth, userController.deleteUser); // ok
 
-router.route("/login").post(checkSchema(userLogin), validate,  authController.loginUser);
+router.route("/login").post(checkSchema(userLogin), validate,  authController.loginUser); //ok
 
-router.route("/logout").post(isAuth, authController.logoutUser); 
+router.route("/logout").post(isAuth, authController.logoutUser); // ok
 
 export default router;
