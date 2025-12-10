@@ -41,7 +41,6 @@ export const signupValidation = {
 export const userPatch = {
   username: {
     optional: true,
-    bail: true,
     isString: { errorMessage: "Must be a string" },
     notEmpty: { errorMessage: "Must be not empty" },
     isLength: {
@@ -56,7 +55,6 @@ export const userPatch = {
   },
   email: {
     optional: true,
-    bail: true,
     isEmail: { errorMessage: "Invalid email" },
     isString: { errorMessage: "Must be a string" },
     notEmpty: { errorMessage: "Must be not empty" },
@@ -65,7 +63,6 @@ export const userPatch = {
   },
   password: {
     optional: true,
-    bail: true,
     isString: { errorMessage: "Must be a string" },
     notEmpty: { errorMessage: "Must be not empty" },
     isLength: {
