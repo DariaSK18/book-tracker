@@ -1,11 +1,12 @@
 import Book from "./book.mjs";
 import User from "./user.mjs";
 import Note from "./note.mjs";
+import Progress from "./progress.mjs";
+import Rating from "./rating.mjs";
+import Category from "./category.mjs";
+import BookCategory from "./bookCategory.mjs";
 
-Book.belongsTo(User, {
-  foreignKey: "user_id",
-  as: "user",
-});
+Book.belongsTo(User, { foreignKey: "user_id", as: "user" });
 
 User.hasMany(Book, {
   foreignKey: "user_id",
@@ -19,10 +20,7 @@ Book.hasMany(Note, {
   onDelete: "CASCADE",
 });
 
-Note.belongsTo(Book, {
-  foreignKey: "book_id",
-  as: "book",
-});
+Note.belongsTo(Book, { foreignKey: "book_id", as: "book" });
 
 User.hasMany(Note, {
   foreignKey: "user_id",
@@ -30,9 +28,46 @@ User.hasMany(Note, {
   onDelete: "CASCADE",
 });
 
-Note.belongsTo(User, {
+Note.belongsTo(User, { foreignKey: "user_id", as: "user" });
+
+Book.hasMany(Rating, {
+  foreignKey: "book_id",
+  as: "ratings",
+  onDelete: "CASCADE",
+});
+Rating.belongsTo(Book, { foreignKey: "book_id", as: "book" });
+
+User.hasMany(Rating, {
   foreignKey: "user_id",
-  as: "user",
+  as: "ratings",
+  onDelete: "CASCADE",
+});
+Rating.belongsTo(User, { foreignKey: "user_id", as: "user" });
+
+Book.hasMany(Progress, {
+  foreignKey: "book_id",
+  as: "progresses",
+  onDelete: "CASCADE",
+});
+Progress.belongsTo(Book, { foreignKey: "book_id", as: "book" });
+
+User.hasMany(Progress, {
+  foreignKey: "user_id",
+  as: "progresses",
+  onDelete: "CASCADE",
+});
+Progress.belongsTo(User, { foreignKey: "user_id", as: "user" });
+
+Book.belongsToMany(Category, {
+  through: BookCategory,
+  foreignKey: "book_id",
+  as: "categories",
 });
 
-export { Book, User, Note };
+Category.belongsToMany(Book, {
+  through: BookCategory,
+  foreignKey: "category_id",
+  as: "books",
+});
+
+export { Book, User, Note, Progress, Rating, Category, BookCategory };
