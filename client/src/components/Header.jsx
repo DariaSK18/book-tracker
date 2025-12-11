@@ -45,7 +45,7 @@ export default function Header() {
         {/* <Link to="/profile">Profile</Link> |{" "}
         <Link to="/change-password">ChangePassword</Link> |{" "}
         <Link to="/login">Login</Link> | <Link to="/register">Register</Link> */}
-        <Link to="/upload-book">Upload Book</Link>
+        {/* <Link to="/upload-book">Upload Book</Link> */}
       </div>
     </header>
   );
