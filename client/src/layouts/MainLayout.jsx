@@ -8,7 +8,7 @@ export default function MainLayout() {
 //   const { alert, clearAlert } = useAlert();
 
   return (
-    <>
+    <div className="wrapper">
       <Header />
       {/* {alert && (
         <Alert
@@ -19,9 +19,9 @@ export default function MainLayout() {
         />
       )} */}
       <main className="main">
-        <Outlet />
+        <div className="main__container"><Outlet /></div>
       </main>
       <Footer />
-    </>
+    </div>
   );
 }

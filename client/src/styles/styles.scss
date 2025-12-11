@@ -1,0 +1,35 @@
+// ---- imports style.scss
+@import "./reset";
+@import "variables";
+// @import "header";
+// @import "footer";
+
+// ---- common styles
+
+body {
+  font-family: "Nunito", "Roboto";
+  font-size: 1rem;
+  background: var(--bg-color);
+  color: var(--text-color);
+}
+[class*="__container"] {
+  max-width: 75rem;
+  margin: 0 auto;
+  padding: 1rem;
+}
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  .main {
+    flex-grow: 1;
+    padding-top: 6rem;
+    @media (max-width: 30rem) {
+      padding-top: 4.2rem;
+    }
+  }
+
+  .footer {
+    flex: 0 1 auto;
+  }
+}
