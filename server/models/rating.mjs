@@ -9,7 +9,7 @@ Rating.init(
     value: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      validate: { min: 1, max: 5 },
+      validate: { min: 0, max: 5 },
     },
     user_id: {
       type: DataTypes.INTEGER,
