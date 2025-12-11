@@ -4,7 +4,7 @@ import errorHandler from "./middleware/errorHandler.mjs";
 import AppError from "./utils/AppError.mjs";
 import routes from "./routes/index.mjs";
 import cookieParser from "cookie-parser";
-// import cors from "cors";
+import cors from "cors";
 import session from "express-session";
 import passport from "./strategies/local-strategy.mjs";
 import SequelizeStore from "connect-session-sequelize";
@@ -13,14 +13,14 @@ import sequelize from "./config/connection.mjs";
 dotenv.config();
 
 const app = express();
-// const FRONTEND_URL = process.env.FRONTEND_URL;
+const FRONTEND_URL = process.env.FRONTEND_URL;
 
-// app.use(
-//   cors({
-//     origin: FRONTEND_URL,
-//     credentials: true,
-//   })
-// );
+app.use(
+  cors({
+    origin: FRONTEND_URL,
+    credentials: true,
+  })
+);
 
 app.use(express.json());
 app.use(cookieParser(process.env.COOKIE_SECRET));
