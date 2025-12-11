@@ -6,6 +6,9 @@ import Categories from "../pages/Categories";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import ChangePassword from "../pages/ChangePassword";
+import Goals from "../pages/Goals";
+import Statistic from "../pages/Statistic";
+import Collections from "../pages/Collections";
 
 export const router = createBrowserRouter([
   {
