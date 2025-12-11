@@ -80,115 +80,99 @@ export const getAllBooks = catchAsync(async (req, res, next) => {
 //   });
 // });
 
-// --- post a book  ---
-export const createPost = catchAsync(async (req, res, next) => {
+// --- upload a book  ---
+export const uploadBook = catchAsync(async (req, res, next) => {
   const {
     user,
-    body: { title, description, category, image_url, tags },
+    body: {
+      title,
+      description,
+      category,
+      rating,
+      pages_total,
+      pages_read,
+      image_url,
+    },
   } = req;
   if (!title || !description)
     return next(new AppError("Title and description are required", 400));
 
-  const post = await Meme.create({
+  const book = await Book.create({
     title,
     description,
     category,
+    rating,
+    pages_total,
+    pages_read,
     image_url,
     user_id: user.id,
   });
 
-  if (tags && Array.isArray(tags) && tags.length) {
-    for (let tagName of tags) {
-      const [tag] = await Tag.findOrCreate({
-        where: { tag_name: tagName },
-      });
-
-      await MemeTag.findOrCreate({
-        where: {
-          meme_id: post.id,
-          tag_id: tag.id,
-        },
-      });
-    }
-  }
-  sendResponse(res, 201, post);
+  sendResponse(res, 201, book);
 });
 
-// // --- get one post by id ---
+// --- get one book by id ---
+export const getOneBook = catchAsync(async (req, res, next) => {
+  const {
+    params: { id },
+  } = req;
+  const book = await Book.findByPk(id);
+  if (!book) return next(new AppError("Book not found", 404));
+  sendResponse(res, 200, book);
+});
 
-// export const getOnePost = catchAsync(async (req, res, next) => {
-//   const {
-//     params: { id },
-//   } = req;
-//   const post = await Meme.findByPk(id, {
-//     include: {
-//       model: Tag,
-//       as: "tags",
-//       through: { attributes: [] },
-//     },
-//   });
-//   if (!post) return next(new AppError("Post not found", 404));
-//   sendResponse(res, 200, post);
-// });
+// --- update a field ---
+export const updateBook = catchAsync(async (req, res, next) => {
+  const {
+    params: { id },
+    body: {
+      title,
+      description,
+      category,
+      rating,
+      pages_total,
+      pages_read,
+      image_url,
+    },
+    user,
+  } = req;
 
-// // --- update a field ---
+  const book = await Book.findByPk(id);
+  if (!book) return next(new AppError("Post not found", 404));
+  if (book.user_id !== user.id)
+    return next(new AppError("Not the author", 403));
 
-// export const updatePost = catchAsync(async (req, res, next) => {
-//   const {
-//     params: { id },
-//     body: { title, description, category, image_url, tags },
-//     user,
-//   } = req;
+  if (title) book.title = title;
+  if (description) book.description = description;
+  if (category) book.category = category;
+  if (rating) book.rating = rating;
+  if (pages_total) book.pages_total = pages_total;
+  if (pages_read) book.pages_read = pages_read;
+  if (image_url) book.image_url = image_url;
 
-//   const post = await Meme.findByPk(id);
-//   if (!post) return next(new AppError("Post not found", 404));
-//   if (post.user_id !== user.id)
-//     return next(new AppError("Not the author", 403));
+  const updated = await book.save();
+  sendResponse(res, 200, updated);
+});
 
-//   if (title) post.title = title;
-//   if (description) post.description = description;
-//   if (category) post.category = category;
-//   if (image_url) post.image_url = image_url;
+// --- delete book by id ---
+export const deleteBook = catchAsync(async (req, res, next) => {
+  const {
+    params: { id },
+    user,
+  } = req;
 
-//   if (tags && Array.isArray(tags)) {
-//     await MemeTag.destroy({ where: { meme_id: post.id } });
+  const book = await Book.findByPk(id);
+  if (!book) return next(new AppError("Book not found", 404));
 
-//     for (const tagName of tags) {
-//       const [tag] = await Tag.findOrCreate({
-//         where: { tag_name: tagName },
-//       });
-//       await MemeTag.findOrCreate({
-//         where: { meme_id: post.id, tag_id: tag.id },
-//       });
-//     }
-//   }
+  if (book.user_id !== user.id)
+    return next(new AppError("Not the author", 403));
 
-//   const updated = await post.save();
-//   sendResponse(res, 200, updated);
-// });
+  await book.destroy();
 
-// // --- delete post by id ---
-
-// export const deletePost = catchAsync(async (req, res, next) => {
-//   const {
-//     params: { id },
-//     user,
-//   } = req;
-
-//   const post = await Meme.findByPk(id);
-//   if (!post) return next(new AppError("Post not found", 404));
-
-//   if (post.user_id !== user.id)
-//     return next(new AppError("Not the author", 403));
-
-//   await MemeTag.destroy({ where: { meme_id: id } });
-//   await post.destroy();
-
-//   sendResponse(res, 200, { msg: "Post deleted successfully" });
-// });
+  sendResponse(res, 200, { msg: "Book deleted successfully" });
+});
 
 // // --- toggle like for post ---
-
 // export const toggleLike = catchAsync(async (req, res, next) => {
 //   const postId = req.params.id;
 //   const userId = req.user.id;
