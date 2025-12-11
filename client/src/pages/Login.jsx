@@ -1,28 +1,33 @@
 import { useState } from "react";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  // const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
-  // const navigate = useNavigate();
-  // const { login } = useAuth();
+  const navigate = useNavigate();
+  const { login } = useAuth();
   // const { showAlert } = useAlert();
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  //   try {
-  //     await login(email, password);
-  //     navigate("/");
-  //   } catch (err) {
-  //     showAlert("error", err.message);
-  //   }
-  // };
+    try {
+      await login(email, password);
+      navigate("/");
+    } catch (err) {
+      console.log(err);
+      
+      // showAlert("error", err.message);
+    }
+  };
   return (
     <div className="login">
-      Login
       <div className="login__box">
         <h1>Login</h1>
         <form onSubmit={handleSubmit}>
