@@ -86,12 +86,13 @@ export const uploadBook = catchAsync(async (req, res, next) => {
     user,
     body: {
       title,
+      author,
       description,
-      category,
-      rating,
+      collection,
+      genre,
       pages_total,
       pages_read,
-      image_url,
+      reading_status,
     },
   } = req;
   if (!title || !description)
@@ -99,12 +100,13 @@ export const uploadBook = catchAsync(async (req, res, next) => {
 
   const book = await Book.create({
     title,
+    author,
     description,
-    category,
-    rating,
+    collection,
+    genre,
     pages_total,
     pages_read,
-    image_url,
+    reading_status,
     user_id: user.id,
   });
 
