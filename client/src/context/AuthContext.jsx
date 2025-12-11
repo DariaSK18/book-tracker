@@ -1,7 +1,7 @@
 import { createContext, useContext, useState } from "react";
 import {
   login as apiLogin,
-  // register as apiRegister,
+  register as apiRegister,
   // logout as apiLogout,
   // getMe,
   // changePassword as apiChangePassword,
@@ -44,16 +44,16 @@ export function AuthProvider({ children }) {
     throw new Error("Login failed");
   }
 
-  // // --- register ---
-  // async function register(username, email, password) {
-  //   await apiRegister(username, email, password);
-  //   const res = await apiLogin(email, password);
-  //   if (res?.data?.user) {
-  //     setUser(res.data.user);
-  //     return res.data.user;
-  //   }
-  //   throw new Error("Registration succeeded but login failed");
-  // }
+  // --- register ---
+  async function register(username, email, password) {
+    await apiRegister(username, email, password);
+    const res = await apiLogin(email, password);
+    if (res?.data?.user) {
+      setUser(res.data.user);
+      return res.data.user;
+    }
+    throw new Error("Registration succeeded but login failed");
+  }
 
   // // --- logout ---
   // async function logout() {
@@ -78,7 +78,7 @@ export function AuthProvider({ children }) {
   const value = {
     user,
     login,
-    // register,
+    register,
     // logout,
     isAuthenticated: !!user,
     // loading,
