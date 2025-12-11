@@ -7,8 +7,8 @@
   - [x] Add `.gitignore` (node_modules, .DS_Store, etc.)
   - [x] Add `README.md` and documentation files
 
-- [ ] **Setup project structure**
-  - [ ] Define folder structure for frontend and backend:
+- [x] **Setup project structure**
+  - [x] Define folder structure for frontend and backend:
 
 ```bash
     /client
@@ -36,12 +36,12 @@
        /wireframes
 ```
 
-- [ ] Initialize npm projects for frontend and backend
+- [x] Initialize npm projects for frontend and backend
 
-- [ ] **Setup development tools**
-  - [ ] Code linter and formatter (ESLint + Prettier) (optional)
-  - [ ] Install dependencies (React, Express, database client, etc.)
-  - [ ] Setup basic folder scaffolding and placeholder files
+- [x] **Setup development tools**
+  - [x] Code linter and formatter (ESLint + Prettier)
+  - [x] Install dependencies (React, Express, database client, etc.)
+  - [x] Setup basic folder scaffolding and placeholder files
 
 ---
 
@@ -49,7 +49,7 @@
 
 - [ ] **Define core features**
 
-  - [ ] User authentication (signup/login)
+  - [x] User authentication (signup/login)
   - [ ] Uploading books
   - [ ] Book rating
   - [ ] Notes section
@@ -60,14 +60,14 @@
 
   - [ ] Draw screens for main pages (using figma): Home, Book Upload, Book Note, Profile, Login, Sign up
 
-- [ ] **Design database schema**
+- [x] **Design database schema**
 
-  - [ ] Define tables/models: User, Book, Rating, Notes, Categories
-  - [ ] Define relationships (1-to-many, many-to-many)
+  - [x] Define tables/models: User, Book, Rating, Notes, Categories
+  - [x] Define relationships (1-to-many, many-to-many)
 
 - [ ] **Define API endpoints**
-  - [ ] User authentication (login/signup)
-  - [ ] Book CRUD (create, read, update, delete)
+  - [x] User authentication (login/signup)
+  - [x] Book CRUD (create, read, update, delete)
   - [ ] Rating and notes
   - [ ] Categories and filters
 
@@ -75,16 +75,16 @@
 
 ## Phase 3 — Backend Development
 
-- [ ] **Setup backend server**
+- [x] **Setup backend server**
 
-  - [ ] Initialize Express/Node server
-  - [ ] Setup database connection
-  - [ ] Setup basic routing
+  - [x] Initialize Express/Node server
+  - [x] Setup database connection
+  - [x] Setup basic routing
 
 - [ ] **Implement core backend features**
 
-  - [ ] User authentication with session
-  - [ ] CRUD for books
+  - [x] User authentication with session
+  - [x] CRUD for books
   - [ ] Rating functionality
   - [ ] Notes API
   - [ ] Categories API
@@ -93,10 +93,10 @@
 
 ## Phase 4 — Frontend Development
 
-- [ ] **Setup frontend**
+- [x] **Setup frontend**
 
-  - [ ] Initialize React project
-  - [ ] Install dependencies (React Router, state management)
+  - [x] Initialize React project
+  - [x] Install dependencies (React Router, state management)
 
 - [ ] **Implement core pages**
 
@@ -107,8 +107,8 @@
 
 - [ ] **Connect frontend to backend**
 
-  - [ ] Fetch for API calls
-  - [ ] Handle authentication tokens
+  - [x] Fetch for API calls
+  - [x] Handle authentication tokens
   - [ ] Display ratings/notes dynamically
 
 - [ ] **Add UI polish**
