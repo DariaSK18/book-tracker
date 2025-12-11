@@ -18,6 +18,11 @@ Book.init(
         notEmpty: true,
       },
     },
+    author: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: { notEmpty: true },
+    },
     description: {
       type: DataTypes.TEXT,
       allowNull: false,
@@ -27,6 +32,14 @@ Book.init(
     },
     category: {
       type: DataTypes.TEXT,
+      allowNull: true,
+    },
+    collection: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    genre: {
+      type: DataTypes.STRING,
       allowNull: true,
     },
     rating: {
@@ -51,6 +64,10 @@ Book.init(
       validate: {
         min: 0,
       },
+    },
+    reading_status: {
+      type: DataTypes.STRING, // done, now, will
+      allowNull: true,
     },
     image_url: {
       type: DataTypes.STRING,
