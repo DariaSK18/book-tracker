@@ -2,7 +2,7 @@ import { createContext, useContext, useState } from "react";
 import {
   login as apiLogin,
   register as apiRegister,
-  // logout as apiLogout,
+  logout as apiLogout,
   // getMe,
   // changePassword as apiChangePassword,
 } from "../api/authApi";
@@ -55,16 +55,16 @@ export function AuthProvider({ children }) {
     throw new Error("Registration succeeded but login failed");
   }
 
-  // // --- logout ---
-  // async function logout() {
-  //   try {
-  //     await apiLogout();
-  //   } catch (err) {
-  //     console.error("Logout error", err);
-  //   } finally {
-  //     setUser(null);
-  //   }
-  // }
+  // --- logout ---
+  async function logout() {
+    try {
+      await apiLogout();
+    } catch (err) {
+      console.error("Logout error", err);
+    } finally {
+      setUser(null);
+    }
+  }
 
   // const changePassword = async (currentPassword, newPassword) => {
   //   try {
@@ -79,7 +79,7 @@ export function AuthProvider({ children }) {
     user,
     login,
     register,
-    // logout,
+    logout,
     isAuthenticated: !!user,
     // loading,
     // changePassword,

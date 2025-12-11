@@ -49,18 +49,18 @@ export async function register(username, email, password) {
 }
 
 // --- logout ---
-// export async function logout() {
-//   const res = await fetch(`${BASE_URL}/api/user/logout`, {
-//     method: "POST",
-//     credentials: "include",
-//   });
+export async function logout() {
+  const res = await fetch(`${BASE_URL}/api/user/logout`, {
+    method: "POST",
+    credentials: "include",
+  });
 
-//   const json = await res.json();
-//   if (!res.ok) {
-//     throw new Error(json?.msg || "Logout failed");
-//   }
-//   return json;
-// }
+  const json = await res.json();
+  if (!res.ok) {
+    throw new Error(json?.msg || "Logout failed");
+  }
+  return json;
+}
 
 // --- get current user (/me) ---
 // export async function getMe() {
