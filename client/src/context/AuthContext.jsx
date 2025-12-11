@@ -1,10 +1,10 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 import {
   login as apiLogin,
   register as apiRegister,
   logout as apiLogout,
-  // getMe,
-  // changePassword as apiChangePassword,
+  getMe,
+  changePassword as apiChangePassword,
 } from "../api/authApi";
 
 const AuthContext = createContext();
@@ -13,26 +13,24 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   // const [loading, setLoading] = useState(true);
 
-  // useEffect(() => {
-  //   async function init() {
-  //     try {
-  //       const res = await getMe();
-  //       if (res?.data?.user) {
-  //         setUser(res.data.user);
-  //       } else if (res?.data) {
-  //         setUser(res.data);
-  //       } else {
-  //         setUser(null);
-  //       }
-  //     } catch (err) {
-  //       console.error(err);
-  //       setUser(null);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   }
-  //   init();
-  // }, []);
+  useEffect(() => {
+    async function init() {
+      try {
+        const res = await getMe();
+        if (res?.data?.user) {
+          setUser(res.data.user);
+        } else if (res?.data) {
+          setUser(res.data);
+        } else {
+          setUser(null);
+        }
+      } catch (err) {
+        console.error(err);
+        setUser(null);
+      }
+    }
+    init();
+  }, []);
 
   // --- login ---
   async function login(email, password) {
@@ -66,14 +64,15 @@ export function AuthProvider({ children }) {
     }
   }
 
-  // const changePassword = async (currentPassword, newPassword) => {
-  //   try {
-  //     await apiChangePassword(currentPassword, newPassword);
-  //   } catch (err) {
-  //     console.error("Failed to change password", err);
-  //     throw err
-  //   }
-  // };
+   // --- change password ---
+  const changePassword = async (currentPassword, newPassword) => {
+    try {
+      await apiChangePassword(currentPassword, newPassword);
+    } catch (err) {
+      console.error("Failed to change password", err);
+      throw err
+    }
+  };
 
   const value = {
     user,
@@ -82,7 +81,7 @@ export function AuthProvider({ children }) {
     logout,
     isAuthenticated: !!user,
     // loading,
-    // changePassword,
+    changePassword,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

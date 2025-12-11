@@ -63,33 +63,33 @@ export async function logout() {
 }
 
 // --- get current user (/me) ---
-// export async function getMe() {
-//   const res = await fetch(`${BASE_URL}/api/user/me`, {
-//     method: "GET",
-//     credentials: "include",
-//   });
-//   const json = await res.json();
-//   if (!res.ok) {
-//     throw new Error(json?.msg || "Not authenticated");
-//   }
-//   return json;
-// }
+export async function getMe() {
+  const res = await fetch(`${BASE_URL}/api/user/me`, {
+    method: "GET",
+    credentials: "include",
+  });
+  const json = await res.json();
+  if (!res.ok) {
+    throw new Error(json?.msg || "Not authenticated");
+  }
+  return json;
+}
 
 // --- change password ---
-// export async function changePassword(currentPassword, newPassword) {
-//   const res = await fetch(`${import.meta.env.VITE_API_URL}/api/user/me`, {
-//     method: "PATCH",
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//     body: JSON.stringify({
-//       currentPsw: currentPassword,
-//       password: newPassword,
-//     }),
-//     credentials: "include",
-//   });
-//   if (!res.ok) {
-//     const data = await res.json();
-//     throw new Error(data.message || "Failed to change password");
-//   }
-// }
+export async function changePassword(currentPassword, newPassword) {
+  const res = await fetch(`${import.meta.env.VITE_API_URL}/api/user/me`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      currentPsw: currentPassword,
+      password: newPassword,
+    }),
+    credentials: "include",
+  });
+  if (!res.ok) {
+    const data = await res.json();
+    throw new Error(data.message || "Failed to change password");
+  }
+}
