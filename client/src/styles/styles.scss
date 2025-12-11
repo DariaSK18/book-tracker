@@ -1,6 +1,7 @@
 // ---- imports style.scss
 @use "./reset";
 @use "variables" as *;
+@use "auth";
 // @import "header";
 // @import "footer";
 
@@ -23,13 +24,20 @@ body {
   min-height: 100vh;
   .main {
     flex-grow: 1;
-    padding-top: 6rem;
-    @media (max-width: 30rem) {
-      padding-top: 4.2rem;
-    }
+    padding: 4rem 0;
   }
-
+  .header{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: white;
+  }
   .footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
     flex: 0 1 auto;
   }
 }
