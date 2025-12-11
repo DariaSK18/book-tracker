@@ -9,6 +9,7 @@ import ChangePassword from "../pages/ChangePassword";
 import Goals from "../pages/Goals";
 import Statistic from "../pages/Statistic";
 import Collections from "../pages/Collections";
+import UploadBook from "../pages/UploadBook";
 
 export const router = createBrowserRouter([
   {
@@ -23,6 +24,7 @@ export const router = createBrowserRouter([
       { path: "/goals", element: <Goals /> },
       { path: "/statistic", element: <Statistic /> },
       { path: "/collections", element: <Collections /> },
+      { path: "/upload-book", element: <UploadBook /> },
     ],
   },
 ]);
