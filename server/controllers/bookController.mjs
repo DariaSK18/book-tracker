@@ -6,7 +6,7 @@ import { sendResponse } from "../utils/helpers/sendResponse.mjs";
 // import { Op } from "sequelize";
 
 // --- get all posts ---
-export const getAllPosts = catchAsync(async (req, res, next) => {
+export const getAllBooks = catchAsync(async (req, res, next) => {
   const books = await Book.findAll();
   sendResponse(res, 200, { books });
 });
@@ -80,40 +80,39 @@ export const getAllPosts = catchAsync(async (req, res, next) => {
 //   });
 // });
 
-// // --- create a post ---
+// --- post a book  ---
+export const createPost = catchAsync(async (req, res, next) => {
+  const {
+    user,
+    body: { title, description, category, image_url, tags },
+  } = req;
+  if (!title || !description)
+    return next(new AppError("Title and description are required", 400));
 
-// export const createPost = catchAsync(async (req, res, next) => {
-//   const {
-//     user,
-//     body: { title, description, category, image_url, tags },
-//   } = req;
-//   if (!title || !description)
-//     return next(new AppError("Title and description are required", 400));
+  const post = await Meme.create({
+    title,
+    description,
+    category,
+    image_url,
+    user_id: user.id,
+  });
 
-//   const post = await Meme.create({
-//     title,
-//     description,
-//     category,
-//     image_url,
-//     user_id: user.id,
-//   });
+  if (tags && Array.isArray(tags) && tags.length) {
+    for (let tagName of tags) {
+      const [tag] = await Tag.findOrCreate({
+        where: { tag_name: tagName },
+      });
 
-//   if (tags && Array.isArray(tags) && tags.length) {
-//     for (let tagName of tags) {
-//       const [tag] = await Tag.findOrCreate({
-//         where: { tag_name: tagName },
-//       });
-
-//       await MemeTag.findOrCreate({
-//         where: {
-//           meme_id: post.id,
-//           tag_id: tag.id,
-//         },
-//       });
-//     }
-//   }
-//   sendResponse(res, 201, post);
-// });
+      await MemeTag.findOrCreate({
+        where: {
+          meme_id: post.id,
+          tag_id: tag.id,
+        },
+      });
+    }
+  }
+  sendResponse(res, 201, post);
+});
 
 // // --- get one post by id ---
 
