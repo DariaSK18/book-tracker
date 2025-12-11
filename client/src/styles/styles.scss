@@ -1,6 +1,6 @@
 // ---- imports style.scss
 @use "./reset";
-@use "variables";
+@use "variables" as *;
 // @import "header";
 // @import "footer";
 
@@ -9,8 +9,8 @@
 body {
   font-family: "Nunito", "Roboto";
   font-size: 1rem;
-  background: var(--bg-color);
-  color: var(--text-color);
+  background: $bg-color;
+  color: $text-color;
 }
 [class*="__container"] {
   max-width: 75rem;
