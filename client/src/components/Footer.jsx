@@ -59,7 +59,7 @@ function move(id, position, color) {
     // </footer>
     
 
-    <footer >
+    <footer className="footer">
 <div id="navbarContainer">
   <div id="navbar">
     <div id="bubbleWrapper">
