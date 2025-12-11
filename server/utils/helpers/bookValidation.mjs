@@ -52,8 +52,7 @@ export const bookCreateValidation = {
     toInt: true,
   },
   image_url: {
-    optional: true,
-    isString: { errorMessage: "Image URL must be a string" },
+    optional: { options: { nullable: true } },
     isURL: { errorMessage: "Must be a valid URL" },
     trim: true,
   }
