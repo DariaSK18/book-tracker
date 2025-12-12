@@ -2,6 +2,7 @@
 @use "./reset";
 @use "variables" as *;
 @use "auth";
+@use "book";
 // @import "header";
 // @import "footer";
 
@@ -32,6 +33,7 @@ body {
     left: 0;
     width: 100%;
     background: white;
+    z-index: 3000;
   }
   .footer {
     position: fixed;
@@ -39,5 +41,6 @@ body {
     left: 0;
     width: 100%;
     flex: 0 1 auto;
+    z-index: 3000;
   }
 }

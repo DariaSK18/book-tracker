@@ -113,12 +113,13 @@ form {
     position: relative;
   }
 
-  input {
+  input, textarea {
     border: 0.1rem solid rgb(0, 0, 0);
     padding: 1rem;
     border-radius: 1rem;
     width: 100%;
     min-width: 20rem;
+    background: none;
   }
   .toggle-password,
   .toggle-confirmed-password {
