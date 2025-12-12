@@ -73,11 +73,11 @@ function move(id, position, color) {
        
     </div>
     <div id="menuWrapper">
-      <div id="menu1" className="menuElement" onClick={() => move('1', getPositionPercent(1), '#fddaa5ff')}><FontAwesomeIcon icon={faBook} /></div>
+      <div id="menu1" className="menuElement" onClick={() => move('1', getPositionPercent(1), '#a5fdb7ff')}><FontAwesomeIcon icon={faBook} /></div>
       
-      <div id="menu2" className="menuElement" onClick={() => move('2', getPositionPercent(2), '#ce93d8')}><Link to="/categories"><FontAwesomeIcon icon={faFolderOpen} /></Link> </div>
+      <div id="menu2" className="menuElement" onClick={() => move('2', getPositionPercent(2), '#8eeee1ff')}><Link to="/categories"><FontAwesomeIcon icon={faFolderOpen} /></Link> </div>
       <div id="menu3" className="menuElement" onClick={() => move('3', getPositionPercent(3), '#93d8a5ff')}><Link to="/upload-book"><FontAwesomeIcon icon={faCirclePlus} /></Link> </div>
-      <div id="menu4" className="menuElement" onClick={() => move('4', getPositionPercent(4), '#81d4fa')}><Link to="/goals"><FontAwesomeIcon icon={faCircleCheck} /></Link> </div>
+      <div id="menu4" className="menuElement" onClick={() => move('4', getPositionPercent(4), '#4d72c8ff')}><Link to="/goals"><FontAwesomeIcon icon={faCircleCheck} /></Link> </div>
       <div id="menu5" className="menuElement" onClick={() => move('5', getPositionPercent(5), '#c5e1a5')}><Link to="/statistic"><FontAwesomeIcon icon={faChartSimple} /></Link> </div>
       
       

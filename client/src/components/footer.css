@@ -15,7 +15,7 @@ footer {
   width: 100vw;
   /* bottom: 0; */
   /* min-width: 100vw; */
-  height: 17vh;
+  height: 4.9rem;
   /* background-color: #ffcc80; */
   /* border-radius: 20px; */
   display: flex;
@@ -61,6 +61,7 @@ footer {
 
 #bubble1 {
   transform: translateY(0%);
+  /* transform: translateX(-15%); needs to be calculated depends on the width of the window*/ 
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 }
 #bubble1 > span {
