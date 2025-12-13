@@ -8,10 +8,13 @@ import "swiper/css";
 import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
 
+import BookActions from "../components/BookActions";
+
 export default function Home() {
   const [books, setBooks] = useState([]);
-  // const [activeIndex, setActiveIndex] = useState(0);
-  // console.log(books);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  console.log(books);
 
   useEffect(() => {
     async function fetchBooks() {
@@ -38,6 +41,7 @@ export default function Home() {
         speed={1000}
         parallax={true}
         loop={true}
+        onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
         coverflowEffect={{
           rotate: -5,
           stretch: 100,
@@ -45,7 +49,7 @@ export default function Home() {
           modifier: 1,
           slideShadows: true,
         }}
-        autoplay={{ delay: 2500, disableOnInteraction: false }}
+        autoplay={{ delay: 3500, disableOnInteraction: false }}
         pagination={true}
         modules={[EffectCoverflow, Pagination, Autoplay]}
         className="mySwiper"
@@ -59,6 +63,24 @@ export default function Home() {
           </SwiperSlide>
         ))}
       </Swiper>
+
+      <div className="book-content">
+        {books[activeIndex] && (
+          <div className="book-info" key={books[activeIndex].id}>
+            <div className="status-info">
+              <span>{books[activeIndex].reading_status}</span>
+              <span>
+                {books[activeIndex].pages_read}/{books[activeIndex].pages_total}
+              </span>
+            </div>
+            <h3>{books[activeIndex].title}</h3>
+            <p>by {books[activeIndex].author}</p>
+            <p>{books[activeIndex].genre}</p>
+            <p>{books[activeIndex].collection}</p>
+            <BookActions book={books[activeIndex]} />
+          </div>
+        )}
+      </div>
     </div>
   );
 }
