@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import gsap from "gsap"; 
-import "./footer.css";
 // import '@fortawesome/fontawesome-free/css/all.min.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBook, faCircleCheck, faChartSimple, faFolderOpen, faCirclePlus } from "@fortawesome/free-solid-svg-icons";
