@@ -64,20 +64,26 @@ export default function Home() {
         ))}
       </Swiper>
 
-      <div className="book-content">
+      <div className="home__books">
         {books[activeIndex] && (
-          <div className="book-info" key={books[activeIndex].id}>
-            <div className="status-info">
-              <span>{books[activeIndex].reading_status}</span>
-              <span>
+          <div className="home__content book" key={books[activeIndex].id}>
+            <div className="book__status status">
+              <span className="status__title">
+                {books[activeIndex].reading_status}
+              </span>
+              <span className="status__pages">
                 {books[activeIndex].pages_read}/{books[activeIndex].pages_total}
               </span>
             </div>
-            <h3>{books[activeIndex].title}</h3>
-            <p>by {books[activeIndex].author}</p>
-            <p>{books[activeIndex].genre}</p>
-            <p>{books[activeIndex].collection}</p>
-            <BookActions book={books[activeIndex]} />
+            <div className="book__info">
+              <h3 className="book__title">{books[activeIndex].title}</h3>
+              <p className="book__author">by {books[activeIndex].author}</p>
+              <p className="book__genre">{books[activeIndex].genre}</p>
+              <p className="book__collection">
+                {books[activeIndex].collection}
+              </p>
+            </div>
+            <BookActions className="book__actions actions" book={books[activeIndex]} />
           </div>
         )}
       </div>
