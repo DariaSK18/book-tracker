@@ -1,0 +1,43 @@
+.mySwiper {
+  width: 100%;
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+.swiper-slide {
+  width: 250px;
+  height: 380px;
+}
+
+.swiper-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 1rem;
+}
+
+.mySwiper img {
+  // width: 220px;
+  // height: 330px;
+  object-fit: cover;
+  border-radius: 16px;
+  box-shadow: 0 0 2rem rgb(39, 39, 39);
+}
+
+
+// ------
+// .mySwiper .swiper-slide {
+//   transition: filter 0.4s ease, opacity 0.4s ease, transform 0.4s ease;
+//   filter: blur(0.1rem);
+// }
+
+// .mySwiper .swiper-slide-active {
+//   filter: blur(0);
+// }
+
+// ------
+.mySwiper .swiper-slide-prev,
+.mySwiper .swiper-slide-next {
+  filter: blur(0.1rem);
+  opacity: 1;
+}
