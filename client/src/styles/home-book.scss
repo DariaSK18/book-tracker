@@ -1,29 +1,37 @@
+@use "variables" as *;
 .mySwiper {
   width: 100%;
-  padding-top: 50px;
-  padding-bottom: 50px;
+  // height: calc(100vh * 0.5);
+  padding-top: 3rem;
+  padding-bottom: 3rem;
 }
 
 .swiper-slide {
-  width: 250px;
-  height: 380px;
+  width: 100%;
+  height: 20rem;
+  background: $bg-color;
+  border-radius: 1rem;
+  // ----
+  // aspect-ratio: 16 / 9;
+  // overflow: hidden;
 }
 
 .swiper-slide img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  // object-fit: cover;
+  object-fit: contain;
   border-radius: 1rem;
 }
 
 .mySwiper img {
-  // width: 220px;
-  // height: 330px;
-  object-fit: cover;
-  border-radius: 16px;
+  width: 100%;
+  height: 100%;
+  // object-fit: cover;
+  object-fit: contain;
+  border-radius: 1rem;
   box-shadow: 0 0 2rem rgb(39, 39, 39);
 }
-
 
 // ------
 // .mySwiper .swiper-slide {
@@ -40,4 +48,23 @@
 .mySwiper .swiper-slide-next {
   filter: blur(0.1rem);
   opacity: 1;
+}
+
+.book-info {
+  margin-top: 2rem;
+  text-align: center;
+  animation: fadeUp 0.7s ease-in-out;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: scale(0);
+    transform: translateY(-10rem);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+    transform: translateY(0);
+  }
 }
