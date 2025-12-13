@@ -93,6 +93,7 @@ export const uploadBook = catchAsync(async (req, res, next) => {
       pages_total,
       pages_read,
       reading_status,
+      image_url,
     },
   } = req;
   if (!title || !description)
@@ -107,6 +108,7 @@ export const uploadBook = catchAsync(async (req, res, next) => {
     pages_total,
     pages_read,
     reading_status,
+    image_url,
     user_id: user.id,
   });
 
