@@ -34,7 +34,7 @@ body {
     top: 0;
     left: 0;
     width: 100%;
-    background: white;
+    background: $secondary-color;
     z-index: 3000;
   }
   .footer {
@@ -45,4 +45,11 @@ body {
     flex: 0 1 auto;
     z-index: 3000;
   }
+}
+
+.action-btn{
+  width: 10rem;
+  border: 0.1rem solid black;
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
 }
