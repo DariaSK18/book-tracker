@@ -38,7 +38,7 @@ export default function Footer() {
     const left = bubbleEl.offsetLeft + bubbleEl.offsetWidth / 2 - 92;
     setBgLeft(left);
   }
-}, []);
+}, [defaultActive]);
 
   useLayoutEffect(() => {
     const bubbleEl = bubbleRefs.current[active - 1];
