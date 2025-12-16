@@ -1,6 +1,9 @@
 import Button from "../components/Button";
 import Rating from "../components/Rating";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheck} from "@fortawesome/free-solid-svg-icons";
+
 export default function BookActions({ book }) {
   if (!book) return null;
 
@@ -34,9 +37,9 @@ export default function BookActions({ book }) {
             className={"action-btn"}
           />
           <Button
-            text={"Done"}
+            text={<FontAwesomeIcon icon={faCheck} />}
             onClick={handleMarkDone}
-            className={"action-btn"}
+            className={"action-btn icon-done"}
           />
         </div>
       );
@@ -50,9 +53,9 @@ export default function BookActions({ book }) {
             className={"action-btn"}
           />
           <Button
-            text={"Done"}
+            text={<FontAwesomeIcon icon={faCheck} />}
             onClick={handleMarkDone}
-            className={"action-btn"}
+            className={"action-btn icon-done"}
           />
         </div>
       );
