@@ -1,6 +1,7 @@
 import { catchAsync } from "../utils/catchAsync.mjs";
-// import AppError from "../utils/AppError.mjs";
+import AppError from "../utils/AppError.mjs";
 import Book from "../models/book.mjs";
+// import Category from "../models/category.mjs";
 // import User from "../models/user.mjs";
 import { sendResponse } from "../utils/helpers/sendResponse.mjs";
 // import { Op } from "sequelize";
@@ -209,3 +210,12 @@ export const deleteBook = catchAsync(async (req, res, next) => {
 //     liked: liked,
 //   });
 // });
+
+// --- get collections ---
+export const getCollections = catchAsync(async (req, res, next) => {
+  const collections = await Book.findAll({
+    attributes: ['collection'],
+    group: ['collection'],
+  });
+  sendResponse(res, 200, { collections });
+});
