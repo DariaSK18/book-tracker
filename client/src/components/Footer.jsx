@@ -32,13 +32,13 @@ export default function Footer() {
   const [active, setActive] = useState(defaultActive);
   const [bgLeft, setBgLeft] = useState(0);
 
-//   useLayoutEffect(() => {
-//   const bubbleEl = bubbleRefs.current[defaultActive - 1];
-//   if (bubbleEl) {
-//     const left = bubbleEl.offsetLeft + bubbleEl.offsetWidth / 2 - 92;
-//     setBgLeft(left);
-//   }
-// }, [defaultActive]);
+  //   useLayoutEffect(() => {
+  //   const bubbleEl = bubbleRefs.current[defaultActive - 1];
+  //   if (bubbleEl) {
+  //     const left = bubbleEl.offsetLeft + bubbleEl.offsetWidth / 2 - 92;
+  //     setBgLeft(left);
+  //   }
+  // }, [defaultActive]);
 
   useLayoutEffect(() => {
     const bubbleEl = bubbleRefs.current[active - 1];
@@ -58,21 +58,21 @@ export default function Footer() {
         <nav className="footer__navigation">
           <div className="footer__nav-wrapper">
             {bubbles.map((b) => (
-              <div
-                id={b.id}
-                key={b.id}
-                ref={setBubbleRef}
-                className={`bubble ${active === b.id ? "active" : ""}`}
-                onClick={() => handleClick(b.id)}
-              >
-                <Link to={b.path}>
+              <Link to={b.path}>
+                <div
+                  id={b.id}
+                  key={b.id}
+                  ref={setBubbleRef}
+                  className={`bubble ${active === b.id ? "active" : ""}`}
+                  onClick={() => handleClick(b.id)}
+                >
                   <span className="bubble__icon">
                     <FontAwesomeIcon icon={b.icon} />
                   </span>
-                </Link>
-              </div>
+                </div>
+              </Link>
             ))}
-            {active &&  (
+            {active && (
               <div className="bgDrop" style={{ left: `${bgLeft}px` }}>
                 <svg width="180" height="50" viewBox="0 0 196 62" fill="none">
                   <path
