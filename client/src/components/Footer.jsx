@@ -1,103 +1,90 @@
-import { Link } from "react-router-dom";
-import gsap from "gsap"; 
-// import '@fortawesome/fontawesome-free/css/all.min.css';
+import { useState, useRef, useLayoutEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBook, faCircleCheck, faChartSimple, faFolderOpen, faCirclePlus } from "@fortawesome/free-solid-svg-icons";
-// import { faTwitter } from "@fortawesome/free-brands-svg-icons";
-
+import {
+  faBook,
+  faCircleCheck,
+  faChartSimple,
+  faFolderOpen,
+  faCirclePlus,
+} from "@fortawesome/free-solid-svg-icons";
 
 export default function Footer() {
-// function getPositionPercent(index) {
-//   const buttons = 5;
-//   const percent = (100 / (buttons + 1)) * index;
-//   return percent + "%";
-// }
+  const location = useLocation();
+  const svgColor = "#58c6c6ff";
 
- function getPositionPercent(index) {
-    const menu = document.getElementById(`menu${index}`);
-    const container = document.getElementById("navbarContainer");
-    const bubble = document.getElementById("bgBubble");
+  const bubbles = [
+    { id: 1, path: "/", icon: faBook },
+    { id: 2, path: "/categories", icon: faFolderOpen },
+    { id: 3, path: "/upload-book", icon: faCirclePlus },
+    { id: 4, path: "/statistic", icon: faCircleCheck },
+    { id: 5, path: "/goals", icon: faChartSimple },
+  ];
+  const bubbleRefs = useRef([]);
+  const setBubbleRef = (el) => {
+    if (el && !bubbleRefs.current.includes(el)) {
+      bubbleRefs.current.push(el);
+    }
+  };
 
-    // if (!menu || !container) {
-    //   const fallback = container ? container.clientWidth / 2 : window.innerWidth / 2;
-    //   return `${Math.round(fallback)}px`;
-    // }
-    if (!menu || !container || !bubble) return "0px";
+  const defaultActive =
+    bubbles.find((b) => b.path === location.pathname)?.id || 1;
+  const [active, setActive] = useState(defaultActive);
+  const [bgLeft, setBgLeft] = useState(0);
 
-    const menuRect = menu.getBoundingClientRect();
-    const containerRect = container.getBoundingClientRect();
-
-    const centerX = menuRect.left + menuRect.width / 2 - containerRect.left;
-    const bubbleOffset = bubble.offsetWidth / 2;
-    // return `${Math.round(centerX)}px`;
-    return `${Math.round(centerX - bubbleOffset)}px`;
+  useLayoutEffect(() => {
+  const bubbleEl = bubbleRefs.current[defaultActive - 1];
+  if (bubbleEl) {
+    const left = bubbleEl.offsetLeft + bubbleEl.offsetWidth / 2 - 92;
+    setBgLeft(left);
   }
+}, []);
 
+  useLayoutEffect(() => {
+    const bubbleEl = bubbleRefs.current[active - 1];
+    if (bubbleEl) {
+      const left = bubbleEl.offsetLeft + bubbleEl.offsetWidth / 2 - 92;
+      setBgLeft(left);
+    }
+  }, [active]);
 
-function move(id, position, color) {
-    var tl = gsap.timeline();
-    tl.to("#bgBubble", {duration: 0.15, bottom: "-30px", ease: "ease-out"}, 0)
-      .to("#bubble1", {duration: 0.1, y: "120%", boxShadow: 'none', ease: "ease-out",}, 0)
-      .to("#bubble2", {duration: 0.1, y: "120%", boxShadow: 'none', ease: "ease-out",}, 0)
-      .to("#bubble3", {duration: 0.1, y: "120%", boxShadow: 'none', ease: "ease-out",}, 0)
-      .to("#bubble4", {duration: 0.1, y: "120%", boxShadow: 'none', ease: "ease-out",}, 0)
-      .to("#bubble5", {duration: 0.1, y: "120%", boxShadow: 'none', ease: "ease-out",}, 0)
-      .to(".icon", {duration: 0.05, opacity: 0, ease: "ease-out",}, 0)
-      .to("#bgBubble", {duration: 0.2, left: position, ease: "ease-in-out"}, 0.1)
-      .to("#bgBubble", {duration: 0.15, bottom: "-50px", ease: "ease-out"}, '-=0.2')
-      .to(`#bubble${id}`, {duration: 0.15, y: "0%", opacity: 1, boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)', ease: "ease-out"}, '-=0.1')
-      .to(`#bubble${id}> span`, {duration: 0.15, y: "0%", opacity: 0.7, ease: "ease-out"}, '-=0.1')
-      .to("body", {duration: 0.3, backgroundColor: color, ease: "ease-in-out"}, 0)
-      .to("#bg", {duration: 0.3, backgroundColor: color, ease: "ease-in-out"}, 0)
-      .to("#bgBubble", {duration: 0.3, backgroundColor: color, ease: "ease-in-out"}, 0)
-  }
+  const handleClick = (id) => {
+    setActive(id);
+  };
 
   return (
-    // <footer className="footer">
-    //   <div className="footer__container"><Link to="/">My Books</Link> | <Link to="/goals">Goals</Link> | <Link to="/statistic">Stats</Link> | <Link to="/categories">Categories</Link> | <Link to="/collections">Collections</Link></div>
-    // </footer>
-    
-
     <footer className="footer">
-<div id="navbarContainer">
-  <div id="navbar">
-    <div id="bubbleWrapper">
-      <div id="bubble1" className="bubble"><span className="icon"><Link to="/"><FontAwesomeIcon icon={faBook} /></Link> </span></div>
-      
-      <div id="bubble2" className="bubble"><span className="icon"> <Link to="/categories"><FontAwesomeIcon icon={faFolderOpen} /></Link> </span></div>
-      <div id="bubble3" className="bubble"><span className="icon"> <Link to="/upload-book"><FontAwesomeIcon icon={faCirclePlus} /></Link> </span></div>
-      <div id="bubble4" className="bubble"><span className="icon"> <Link to="/statistic"><FontAwesomeIcon icon={faCircleCheck} /></Link> </span></div>
-      <div id="bubble5" className="bubble"><span className="icon"><Link to="/goals"><FontAwesomeIcon icon={faChartSimple} /></Link> </span></div>
-      
-       
-    </div>
-    <div id="menuWrapper">
-      <div id="menu1" className="menuElement" onClick={() => move('1', getPositionPercent(1), '#a5fdb7ff')}><FontAwesomeIcon icon={faBook} /></div>
-      
-      <div id="menu2" className="menuElement" onClick={() => move('2', getPositionPercent(2), '#8eeee1ff')}><Link to="/categories"><FontAwesomeIcon icon={faFolderOpen} /></Link> </div>
-      <div id="menu3" className="menuElement" onClick={() => move('3', getPositionPercent(3), '#93d8a5ff')}><Link to="/upload-book"><FontAwesomeIcon icon={faCirclePlus} /></Link> </div>
-      <div id="menu4" className="menuElement" onClick={() => move('4', getPositionPercent(4), '#4d72c8ff')}><Link to="/goals"><FontAwesomeIcon icon={faCircleCheck} /></Link> </div>
-      <div id="menu5" className="menuElement" onClick={() => move('5', getPositionPercent(5), '#c5e1a5')}><Link to="/statistic"><FontAwesomeIcon icon={faChartSimple} /></Link> </div>
-      
-      
-    </div>
-  </div>
-  <div id="bgWrapper">
-    <div id="bg"></div>
-    <div id="bgBubble"></div>
-  </div>
-</div>
-
-  <svg width="0" height="0" >
-    <defs>
-      <filter id="goo">
-        <feGaussianBlur in="SourceGraphic" stdDeviation="20" result="blur" id="blurFilter"/>
-        <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 30 -15" result="goo" />
-        <feComposite in="SourceGraphic" in2="goo" operator="atop"/>
-      </filter>
-    </defs>
-  </svg>
-
-</footer>
+      <div className="footer__container">
+        <nav className="footer__navigation">
+          <div className="footer__nav-wrapper">
+            {bubbles.map((b) => (
+              <div
+                id={b.id}
+                key={b.id}
+                ref={setBubbleRef}
+                className={`bubble ${active === b.id ? "active" : ""}`}
+                onClick={() => handleClick(b.id)}
+              >
+                <Link to={b.path}>
+                  <span className="bubble__icon">
+                    <FontAwesomeIcon icon={b.icon} />
+                  </span>
+                </Link>
+              </div>
+            ))}
+            {active &&  (
+              <div className="bgDrop" style={{ left: `${bgLeft}px` }}>
+                <svg width="180" height="50" viewBox="0 0 196 62" fill="none">
+                  <path
+                    d="M0 0C0 0 9.7143 2.62616 16.0409 5.3913C40.726 16.1803 52.3868 45.5257 77.1969 56.6087C89.5682 62.1351 107.974 62.969 120.307 56.6087C143.731 44.5287 155.181 16.1256 179.458 5.3913C186.12 2.44566 196 0 196 0H0Z"
+                    fill={svgColor}
+                  />
+                </svg>
+              </div>
+            )}
+          </div>
+        </nav>
+      </div>
+    </footer>
   );
 }
