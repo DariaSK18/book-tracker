@@ -87,3 +87,20 @@ export async function deleteBook(id) {
 
   return res.json();
 }
+
+// --- get coolections ---
+export async function getCollections() {
+  const res = await fetch(`${BASE_URL}/api/book/collections`, {
+    method: "GET",
+    credentials: "include",
+  });
+
+  // console.log(res);
+
+  if (!res.ok) {
+    const errorData = await res.json();
+    throw new Error(errorData?.msg || "Failed to fetch collections");
+  }
+
+  return res.json();
+}
