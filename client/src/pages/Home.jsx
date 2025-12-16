@@ -14,7 +14,12 @@ export default function Home() {
   const [books, setBooks] = useState([]);
   const [activeIndex, setActiveIndex] = useState(0);
 
-  console.log(books);
+  // console.log(books);
+  const statusMap = {
+  will: "Not started yet",
+  now: "Currently reading",
+  done: "Book finished",
+};
 
   useEffect(() => {
     async function fetchBooks() {
@@ -69,7 +74,7 @@ export default function Home() {
           <div className="home__content book" key={books[activeIndex].id}>
             <div className="book__status status">
               <span className="status__title">
-                {books[activeIndex].reading_status}
+                {statusMap[books[activeIndex].reading_status] || 'Unknown status'}
               </span>
               <span className="status__pages">
                 {books[activeIndex].pages_read}/{books[activeIndex].pages_total}
