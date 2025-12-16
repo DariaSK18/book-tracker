@@ -32,13 +32,13 @@ export default function Footer() {
   const [active, setActive] = useState(defaultActive);
   const [bgLeft, setBgLeft] = useState(0);
 
-  useLayoutEffect(() => {
-  const bubbleEl = bubbleRefs.current[defaultActive - 1];
-  if (bubbleEl) {
-    const left = bubbleEl.offsetLeft + bubbleEl.offsetWidth / 2 - 92;
-    setBgLeft(left);
-  }
-}, [defaultActive]);
+//   useLayoutEffect(() => {
+//   const bubbleEl = bubbleRefs.current[defaultActive - 1];
+//   if (bubbleEl) {
+//     const left = bubbleEl.offsetLeft + bubbleEl.offsetWidth / 2 - 92;
+//     setBgLeft(left);
+//   }
+// }, [defaultActive]);
 
   useLayoutEffect(() => {
     const bubbleEl = bubbleRefs.current[active - 1];
