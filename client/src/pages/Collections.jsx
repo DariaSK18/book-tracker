@@ -9,12 +9,13 @@ import GlassIcons from "../component/GlassIcons";
 //   FiBarChart2
 // } from 'react-icons/fi';
 import { FiBook } from "react-icons/fi";
-
+import { useNavigate } from "react-router-dom";
 import { getCollections } from "../api/booksApi";
+// import { Link } from "react-router-dom";
 
 export default function Collections() {
   const [collections, setCollections] = useState([]);
-
+const navigate = useNavigate();
     // console.log(collections);
   
     useEffect(() => {
@@ -48,11 +49,14 @@ export default function Collections() {
   //   color: "#5227FF",
   //   label: col.name
   // }));
+  const slugify = (str) =>
+  str.toLowerCase().replace(/\s+/g, "-");
 
   const items = collections.map((col) => ({
-    icon: <FiBook size={50}/>,
+    icon:  <FiBook size={50} />,
     color: "#2fb9dcff",
     label: col.collection,
+    onClick: () => navigate(`/collection/${slugify(col.collection)}`)
   }));
 
   //   const items = [
@@ -65,11 +69,13 @@ export default function Collections() {
   // ];
 
   return (
-    <div className="collections">
-      {/* Collections */}
-      <div style={{ width: "100%", height: "100%", position: "relative" }}>
-        <GlassIcons items={items} className="custom-class" />
-      </div>
-    </div>
+    <>
+        <div className="collections">
+          {/* Collections */}
+          <div style={{ width: "100%", height: "100%", position: "relative" }}>
+            <GlassIcons items={items} className="custom-class" />
+          </div>
+        </div>
+    </>
   );
 }
