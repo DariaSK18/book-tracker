@@ -15,7 +15,7 @@ export default function Footer() {
 
   const bubbles = [
     { id: 1, path: "/", icon: faBook },
-    { id: 2, path: "/categories", icon: faFolderOpen },
+    { id: 2, path: "/collections", icon: faFolderOpen },
     { id: 3, path: "/upload-book", icon: faCirclePlus },
     { id: 4, path: "/statistic", icon: faCircleCheck },
     { id: 5, path: "/goals", icon: faChartSimple },
@@ -58,10 +58,9 @@ export default function Footer() {
         <nav className="footer__navigation">
           <div className="footer__nav-wrapper">
             {bubbles.map((b) => (
-              <Link to={b.path}>
+              <Link key={b.id} to={b.path}>
                 <div
                   id={b.id}
-                  key={b.id}
                   ref={setBubbleRef}
                   className={`bubble ${active === b.id ? "active" : ""}`}
                   onClick={() => handleClick(b.id)}
