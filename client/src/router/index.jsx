@@ -11,6 +11,7 @@ import Statistic from "../pages/Statistic";
 import Collections from "../pages/Collections";
 import UploadBook from "../pages/UploadBook";
 import AuthPage from "../pages/AuthPage";
+import CollectionBooks from "../pages/CollectionBooks";
 
 export const router = createBrowserRouter([
   {
@@ -27,6 +28,7 @@ export const router = createBrowserRouter([
       { path: "/statistic", element: <Statistic /> },
       { path: "/collections", element: <Collections /> },
       { path: "/upload-book", element: <UploadBook /> },
+      { path: "/collection/:slug", element: <CollectionBooks /> },
     ],
   },
 ]);
