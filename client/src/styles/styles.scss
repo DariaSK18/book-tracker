@@ -15,11 +15,14 @@ body {
   font-size: 1rem;
   background: $bg-color;
   color: $text-color;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 [class*="__container"] {
   max-width: 75rem;
   margin: 0 auto;
-  padding: 1rem;
+  // padding: 1rem;
 }
 .wrapper {
   display: flex;
@@ -27,9 +30,9 @@ body {
   min-height: 100vh;
   .main {
     flex-grow: 1;
-    padding: 4rem 0;
+    padding: 5.5rem 1rem;
   }
-  .header{
+  .header {
     position: fixed;
     top: 0;
     left: 0;
@@ -47,7 +50,7 @@ body {
   }
 }
 
-.action-btn{
+.action-btn {
   width: 10rem;
   border: 0.1rem solid black;
   padding: 0.5rem 1rem;

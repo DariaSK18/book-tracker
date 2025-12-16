@@ -116,12 +116,15 @@
 .actions__will {
   display: flex;
   gap: 1rem;
-  justify-content: space-around;
+  // justify-content: space-around;
 }
 .rating-block {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+}
+.icon-done{
+  max-width: 3rem;
 }
 
 .star {
