@@ -21,6 +21,7 @@ router
   ); // ok
 
 router.get("/collections", bookController.getCollections);
+router.get("/collection/:collection", bookController.getCollectionsByCollection);
 
 router
   .route("/:id")
