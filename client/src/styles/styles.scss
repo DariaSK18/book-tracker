@@ -59,8 +59,9 @@ body {
 }
 
 .action-btn {
+  color: $border-color;
   width: 10rem;
-  border: 0.1rem solid black;
+  border: 0.1rem solid $border-color;
   padding: 0.5rem 1rem;
   border-radius: 2rem;
 }
