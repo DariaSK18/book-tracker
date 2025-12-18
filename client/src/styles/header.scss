@@ -1,5 +1,9 @@
+@use 'variables' as *;
+
 .header {
   padding: 1rem;
+  // background: #ffffff9b;
+  backdrop-filter: blur(0.25rem);
   .header__content {
     display: flex;
     gap: 1rem;
@@ -22,8 +26,8 @@
       }
     }
     .header__link{
-        color: rgb(20, 122, 255);
-        border: 0.1rem solid rgb(20, 122, 255);
+        color: $border-color;
+        border: 0.1rem solid $border-color;
         padding: 0.6rem;
         border-radius: 10rem;
         margin-right: 0.5rem;
