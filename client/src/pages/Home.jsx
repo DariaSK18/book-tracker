@@ -9,10 +9,19 @@ import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
 
 import BookActions from "../components/BookActions";
+import ProgressBar from "../components/ProgressBar";
 
 export default function Home() {
   const [books, setBooks] = useState([]);
   const [activeIndex, setActiveIndex] = useState(0);
+  // const [progress, setProgress] = useState(0);
+  const activeBook = books[activeIndex];
+
+const progress = activeBook && activeBook.pages_total
+  ? Math.round(
+      (activeBook.pages_read / activeBook.pages_total) * 100
+    )
+  : 0;
 
   // console.log(books);
   const statusMap = {
@@ -77,7 +86,12 @@ export default function Home() {
                 {statusMap[books[activeIndex].reading_status] || 'Unknown status'}
               </span>
               <span className="status__pages">
-                {books[activeIndex].pages_read}/{books[activeIndex].pages_total}
+                <ProgressBar value={progress}>
+  {books[activeIndex].pages_read}/{books[activeIndex].pages_total}
+</ProgressBar>
+
+{/* <ProgressBar value={progress} />
+                {books[activeIndex].pages_read}/{books[activeIndex].pages_total} */}
               </span>
             </div>
             <div className="book__info">
