@@ -49,14 +49,14 @@ const navigate = useNavigate();
   //   color: "#5227FF",
   //   label: col.name
   // }));
-  const slugify = (str) =>
-  str.toLowerCase().replace(/\s+/g, "-");
+  // const slugify = (str) =>
+  // str.toLowerCase().replace(/\s+/g, "-");
 
   const items = collections.map((col) => ({
     icon:  <FiBook size={50} />,
     color: "#2fb9dcff",
     label: col.collection,
-    onClick: () => navigate(`/collection/${slugify(col.collection)}`)
+    onClick: () => navigate(`/collection/${encodeURIComponent(col.collection)}`)
   }));
 
   //   const items = [
