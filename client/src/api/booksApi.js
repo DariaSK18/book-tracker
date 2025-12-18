@@ -104,3 +104,19 @@ export async function getCollections() {
 
   return res.json();
 }
+
+// --- get books by collection name ---
+export async function getBooksByCollection(collection) {
+  const res = await fetch(`${BASE_URL}/api/book/collection/${collection}`, {
+    method: "GET",
+    credentials: "include",
+  });
+
+  if (!res.ok) {
+    const errorData = await res.json();
+    throw new Error(errorData?.msg || "Failed to fetch collections");
+  }
+
+  return res.json();
+}
+
