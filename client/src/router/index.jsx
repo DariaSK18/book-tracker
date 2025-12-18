@@ -12,6 +12,7 @@ import Collections from "../pages/Collections";
 import UploadBook from "../pages/UploadBook";
 import AuthPage from "../pages/AuthPage";
 import CollectionBooks from "../pages/CollectionBooks";
+import SingleBook from "../pages/SingleBook";
 
 export const router = createBrowserRouter([
   {
@@ -29,6 +30,7 @@ export const router = createBrowserRouter([
       { path: "/collections", element: <Collections /> },
       { path: "/upload-book", element: <UploadBook /> },
       { path: "/collection/:slug", element: <CollectionBooks /> },
+      { path: "/single-book/:id", element: <SingleBook /> },
     ],
   },
 ]);
