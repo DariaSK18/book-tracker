@@ -214,8 +214,17 @@ export const deleteBook = catchAsync(async (req, res, next) => {
 // --- get collections ---
 export const getCollections = catchAsync(async (req, res, next) => {
   const collections = await Book.findAll({
-    attributes: ['collection'],
-    group: ['collection'],
+    attributes: ["collection"],
+    group: ["collection"],
   });
   sendResponse(res, 200, { collections });
+});
+
+// --- get books by collection name ---
+export const getCollectionsByCollection = catchAsync(async (req, res, next) => {
+  const { collection } = req.params;
+  const books = await Book.findAll({
+    where: { collection },
+  });
+  sendResponse(res, 200, { books });
 });
