@@ -12,7 +12,7 @@ const router = Router();
 
 router
   .route("/")
-  .get(bookController.getAllBooks) // ok
+  .get(isAuth, bookController.getAllBooks) // ok
   .post(
     isAuth,
     checkSchema(bookCreateValidation),
@@ -20,8 +20,13 @@ router
     bookController.uploadBook
   ); // ok
 
-router.get("/collections", bookController.getCollections);
-router.get("/collection/:collection", bookController.getCollectionsByCollection);
+router.get("/collections", isAuth, bookController.getCollections);
+router.get(
+  "/collection/:collection", isAuth,
+  bookController.getBooksByCollection
+);
+
+router.patch("/:id/favourite", isAuth, bookController.toggleFavourite);
 
 router
   .route("/:id")
