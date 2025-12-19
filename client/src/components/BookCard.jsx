@@ -2,14 +2,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   // faCircleXmark as faCircleXmarkSolid,
   faXmark,
-  // faHeart as faHeartSolid,
+  faHeart as faHeartSolid,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   // faCircleXmark as faCircleXmarkReg,
   faHeart as faHeartReg,
 } from "@fortawesome/free-regular-svg-icons";
 
-export default function BookCard({ data, onDelete }) {
+export default function BookCard({ data, onDelete, onToggleFavourite }) {
   const handleDeleteClick = (e) => {
     e.stopPropagation();
     onDelete(data.id);
@@ -25,12 +25,19 @@ export default function BookCard({ data, onDelete }) {
 
       {/* <FontAwesomeIcon icon={faHeartSolid} /> */}
       <div className="book-card__image">
-        <img src={data.image_url} alt={data.title} />
+        <img src={data.image_url || "/images/no_cover_available.png"} alt={data.title} />
       </div>
       <div className="book-card__text">
         <h3 className="book-card__title">{data.title}</h3>
         <p className="book-card__author">by {data.author}</p>
-        <FontAwesomeIcon className="book-card__btn-like" icon={faHeartReg} />
+        <FontAwesomeIcon className={`book-card__btn-like ${
+    data.is_favourite ? "is-active" : ""
+ }`}
+  icon={data.is_favourite ? faHeartSolid : faHeartReg}
+  onClick={(e) => {
+    e.stopPropagation();
+    onToggleFavourite(data.id);
+  }} />
       </div>
     </div>
   );
