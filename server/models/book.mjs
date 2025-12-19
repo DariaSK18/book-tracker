@@ -52,7 +52,10 @@ Book.init(
     },
     pages_total: {
       type: DataTypes.INTEGER,
-      allowNull: true,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
       validate: {
         min: 1,
       },
@@ -72,6 +75,11 @@ Book.init(
     image_url: {
       type: DataTypes.STRING,
       allowNull: true,
+    },
+    is_favourite: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
     },
     user_id: {
       type: DataTypes.INTEGER,
