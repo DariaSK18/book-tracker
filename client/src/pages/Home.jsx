@@ -14,21 +14,19 @@ import ProgressBar from "../components/ProgressBar";
 export default function Home() {
   const [books, setBooks] = useState([]);
   const [activeIndex, setActiveIndex] = useState(0);
-  // const [progress, setProgress] = useState(0);
   const activeBook = books[activeIndex];
 
-const progress = activeBook && activeBook.pages_total
-  ? Math.round(
-      (activeBook.pages_read / activeBook.pages_total) * 100
-    )
-  : 0;
+  const progress =
+    activeBook && activeBook.pages_total
+      ? Math.round((activeBook.pages_read / activeBook.pages_total) * 100)
+      : 0;
 
   // console.log(books);
   const statusMap = {
-  will: "Not started yet",
-  now: "Currently reading",
-  done: "Book finished",
-};
+    will: "Not started yet",
+    now: "Currently reading",
+    done: "Book finished",
+  };
 
   useEffect(() => {
     async function fetchBooks() {
@@ -83,15 +81,14 @@ const progress = activeBook && activeBook.pages_total
           <div className="home__content book" key={books[activeIndex].id}>
             <div className="book__status status">
               <span className="status__title">
-                {statusMap[books[activeIndex].reading_status] || 'Unknown status'}
+                {statusMap[books[activeIndex].reading_status] ||
+                  "Unknown status"}
               </span>
               <span className="status__pages">
                 <ProgressBar value={progress}>
-  {books[activeIndex].pages_read}/{books[activeIndex].pages_total}
-</ProgressBar>
-
-{/* <ProgressBar value={progress} />
-                {books[activeIndex].pages_read}/{books[activeIndex].pages_total} */}
+                  {books[activeIndex].pages_read}/
+                  {books[activeIndex].pages_total}
+                </ProgressBar>
               </span>
             </div>
             <div className="book__info">
@@ -102,7 +99,10 @@ const progress = activeBook && activeBook.pages_total
                 {books[activeIndex].collection}
               </p>
             </div>
-            <BookActions className="book__actions actions" book={books[activeIndex]} />
+            <BookActions
+              className="book__actions actions"
+              book={books[activeIndex]}
+            />
           </div>
         )}
       </div>
