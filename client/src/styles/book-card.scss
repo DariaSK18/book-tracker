@@ -1,0 +1,59 @@
+.book-card {
+  position: relative;
+  width: 15rem;
+  height: 20rem;
+  border-radius: 1rem;
+  overflow: hidden;
+  color: white;
+  cursor: pointer;
+  &__btn-wrapper {
+    padding: 0.5rem;
+    position: absolute;
+    top: 0;
+    right: 0;
+    cursor: pointer;
+  }
+  &__btn-del {
+    padding: 0.3rem 0.2rem;
+    backdrop-filter: blur(1rem);
+    box-shadow: 0 0 0.3rem white;
+    border-radius: 50%;
+    transition: all 0.3s ease-in-out;
+  }
+   &__btn-del:hover{
+    transform: scale(1.1);
+   }
+
+  &__image {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    img {
+      max-width: 15rem;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+  &__text {
+    padding: 1rem;
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    justify-content: space-between;
+    backdrop-filter: blur(1rem);
+    text-transform: capitalize;
+  }
+  &__btn-like {
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    font-size: 1.2rem;
+  }
+  &__btn-like:hover{
+    transform: scale(1.3);
+  }
+}
