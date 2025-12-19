@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getBooksByCollection, deleteBook } from "../api/booksApi";
+import { getBooksByCollection, deleteBook, toggleFavouriteBook } from "../api/booksApi";
 import BookCard from "../components/BookCard";
 
 export default function CollectionBooks() {
@@ -8,6 +8,8 @@ export default function CollectionBooks() {
   const collectionName = decodeURIComponent(slug);
   const [books, setBooks] = useState([]);
   const navigate = useNavigate();
+
+  // const hasFavourite = books.some((b) => b.is_favourite);
 
   useEffect(() => {
     async function fetchBooks() {
@@ -17,6 +19,21 @@ export default function CollectionBooks() {
 
     fetchBooks();
   }, [collectionName]);
+  async function handleToggleFavourite(id) {
+  try {
+    const res = await toggleFavouriteBook(id);
+
+    setBooks((prev) =>
+      prev.map((book) =>
+        book.id === id
+          ? { ...book, is_favourite: res.favourite }
+          : book
+      )
+    );
+  } catch (err) {
+    alert(err.message);
+  }
+}
 
   async function handleDeleteBook(id) {
   const confirmed = window.confirm("Are you sure you want to delete this book?");
@@ -39,7 +56,7 @@ export default function CollectionBooks() {
         {books.map((book) => (
           
           <div key={book.id} onClick={() => navigate(`/single-book/${book.id}`)}>
-            <BookCard data={book} onDelete={handleDeleteBook}/>
+            <BookCard data={book} onDelete={handleDeleteBook} onToggleFavourite={handleToggleFavourite}/>
             {/* <h4>{book.title}</h4>
             <p>{book.author}</p> */}
           </div>
