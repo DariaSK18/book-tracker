@@ -1,0 +1,16 @@
+.collection-books {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  justify-content: center;
+  align-items: center;
+  &__title {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+  &__wrapper {
+    display: flex;
+    gap: 1rem;
+  }
+}
