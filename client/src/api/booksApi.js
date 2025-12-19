@@ -44,11 +44,11 @@ export async function createBook(bookData) {
   });
 
   if (!res.ok) {
-  //   const text = await res.text();
-  // console.error("SERVER ERROR:", text);
-  // throw new Error(text);
-    const errorData = await res.json();
-    throw new Error(errorData?.msg || "Failed to create book");
+    const text = await res.text();
+  console.error("SERVER ERROR:", text);
+  throw new Error(text);
+    // const errorData = await res.json();
+    // throw new Error(errorData?.msg || "Failed to create book");
   }
 
   return res.json();
@@ -119,4 +119,20 @@ export async function getBooksByCollection(collection) {
 
   return res.json();
 }
+
+// --- toggle favourite ---
+export async function toggleFavouriteBook(id) {
+  const res = await fetch(`${BASE_URL}/api/book/${id}/favourite`, {
+    method: "PATCH",
+    credentials: "include",
+  });
+
+  if (!res.ok) {
+    const errorData = await res.json();
+    throw new Error(errorData?.msg || "Failed to toggle favourite");
+  }
+
+  return res.json();
+}
+
 
