@@ -15,28 +15,34 @@ import { getCollections } from "../api/booksApi";
 
 export default function Collections() {
   const [collections, setCollections] = useState([]);
-const navigate = useNavigate();
-    // console.log(collections);
-  
-    useEffect(() => {
-      async function fetchCollections() {
-        try {
-          const res = await getCollections();
-          const collections = (res.data.collections ?? [])
-  .filter(col => col && col.collection)
-  .sort((a, b) => a.collection.localeCompare(b.collection));
-          // console.log('data api', res);
-          // console.log(collections);
-          
-          setCollections(collections);
-        } catch (err) {
-          console.error("Failed to load books:", err);
-        }
-      }
-  
-      fetchCollections();
-    }, []);
+  const navigate = useNavigate();
+  // console.log(collections);
 
+  useEffect(() => {
+    async function fetchCollections() {
+      try {
+        const res = await getCollections();
+        const allCollections = res.data.collections ?? [];
+
+        const defaultSlugs = ["to-read", "reading", "finished", "favourite"];
+
+        const sorted = [
+          ...defaultSlugs
+            .map((slug) => allCollections.find((c) => c.slug === slug))
+            .filter(Boolean),
+          ...allCollections
+            .filter((c) => !defaultSlugs.includes(c.slug))
+            .sort((a, b) => a.label.localeCompare(b.label)),
+        ];
+
+        setCollections(sorted);
+      } catch (err) {
+        console.error("Failed to load books:", err);
+      }
+    }
+
+    fetchCollections();
+  }, []);
 
   //   const iconMap = {
   //   "Science Fiction": <FiBook />,
@@ -53,10 +59,10 @@ const navigate = useNavigate();
   // str.toLowerCase().replace(/\s+/g, "-");
 
   const items = collections.map((col) => ({
-    icon:  <FiBook size={50} />,
+    icon: <FiBook size={50} />,
     color: "#2fb9dcff",
-    label: col.collection,
-    onClick: () => navigate(`/collection/${encodeURIComponent(col.collection)}`)
+    label: col.label,
+    onClick: () => navigate(`/collection/${encodeURIComponent(col.slug)}`),
   }));
 
   //   const items = [
@@ -70,12 +76,12 @@ const navigate = useNavigate();
 
   return (
     <>
-        <div className="collections">
-          {/* Collections */}
-          <div style={{ width: "100%", height: "100%", position: "relative" }}>
-            <GlassIcons items={items} className="custom-class" />
-          </div>
+      <div className="collections">
+        {/* Collections */}
+        <div style={{ width: "100%", height: "100%", position: "relative" }}>
+          <GlassIcons items={items} className="custom-class" />
         </div>
+      </div>
     </>
   );
 }
