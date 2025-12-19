@@ -8,7 +8,7 @@ import { sendResponse } from "../utils/helpers/sendResponse.mjs";
 
 // --- get all posts ---
 export const getAllBooks = catchAsync(async (req, res, next) => {
-  const books = await Book.findAll();
+  const books = await Book.findAll({where: { user_id: req.user.id }});
   sendResponse(res, 200, { books });
 });
 
@@ -177,54 +177,90 @@ export const deleteBook = catchAsync(async (req, res, next) => {
   sendResponse(res, 200, { msg: "Book deleted successfully" });
 });
 
-// // --- toggle like for post ---
-// export const toggleLike = catchAsync(async (req, res, next) => {
-//   const postId = req.params.id;
-//   const userId = req.user.id;
+// --- toggle like for book ---
+export const toggleFavourite = catchAsync(async (req, res, next) => {
+  const { id } = req.params;
+  const userId = req.user.id;
+  const book = await Book.findOne({
+    where: {
+      id,
+      user_id: userId,
+    },
+  });
+  if (!book) return next(new AppError("Book not found", 404));
 
-//   const post = await Meme.findByPk(postId);
-//   if (!post) return next(new AppError("Post not found", 404));
+  book.is_favourite = !book.is_favourite;
+  await book.save();
 
-//   const existingLike = await Like.findOne({
-//     where: { user_id: userId, meme_id: postId },
-//   });
-
-//   let liked;
-
-//   if (existingLike) {
-//     await existingLike.destroy();
-//     liked = false;
-//   } else {
-//     await Like.create({
-//       user_id: userId,
-//       meme_id: postId,
-//     });
-//     liked = true;
-//   }
-
-//   const likeCount = await Like.count({
-//     where: { meme_id: postId },
-//   });
-//   sendResponse(res, 200, {
-//     likes: likeCount,
-//     liked: liked,
-//   });
-// });
+  sendResponse(res, 200, {
+    favourite: book.is_favourite,
+    bookId: book.id,
+  });
+});
 
 // --- get collections ---
 export const getCollections = catchAsync(async (req, res, next) => {
-  const collections = await Book.findAll({
-    attributes: ["collection"],
-    group: ["collection"],
+  const books = await Book.findAll({
+    where: { user_id: req.user.id },
+    attributes: ["collection", "reading_status", "is_favourite"],
   });
-  sendResponse(res, 200, { collections });
+
+  const map = new Map();
+
+  books.forEach((book) => {
+    if (book.reading_status === "will")
+      map.set("to-read", { slug: "to-read", label: "To Read" });
+
+    if (book.reading_status === "now")
+      map.set("reading", { slug: "reading", label: "Reading" });
+
+    if (book.reading_status === "done")
+      map.set("finished", { slug: "finished", label: "Finished" });
+
+    if (book.is_favourite)
+      map.set("favourite", { slug: "favourite", label: "Favourite" });
+
+    if (book.collection) {
+      const slug = book.collection.toLowerCase().replace(/\s+/g, "-");
+      map.set(slug, { slug, label: book.collection });
+    }
+  });
+
+
+  sendResponse(res, 200, { collections: Array.from(map.values()), });
 });
 
 // --- get books by collection name ---
-export const getCollectionsByCollection = catchAsync(async (req, res, next) => {
+export const getBooksByCollection = catchAsync(async (req, res, next) => {
   const { collection } = req.params;
-  const books = await Book.findAll({
-    where: { collection },
-  });
+  const userId = req.user.id;
+
+  const where = {
+    user_id: userId,
+  };
+
+  if (collection === "to-read") {
+    where.reading_status = "will";
+  }
+
+  if (collection === "reading") {
+    where.reading_status = "now";
+  }
+
+  if (collection === "finished") {
+    where.reading_status = "done";
+  }
+
+  if (collection === "favourite") {
+    where.is_favourite = true;
+  }
+
+  if (
+    !["to-read", "reading", "finished", "favourite"].includes(collection)
+  ) {
+    where.collection = collection;
+  }
+
+  const books = await Book.findAll({ where });
   sendResponse(res, 200, { books });
 });
