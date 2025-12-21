@@ -15,31 +15,6 @@
   }
 }
 
-// .auth__form {
-//   position: relative;
-//   width: 100%;
-//   overflow: hidden;
-// }
-
-// .auth__form > form {
-//   position: absolute;
-//   top: 0;
-//   width: 100%;
-//   transition: 0.5s;
-// }
-
-// .auth__form > form.login {
-//   left: 0;
-// }
-
-// .auth__form > form.register {
-//   left: 100%;
-// }
-
-// .auth__form > form.active {
-//   left: 0;
-// }
-
 [class*="__box"] {
   display: flex;
   flex-direction: column;
@@ -52,6 +27,7 @@
   justify-content: center;
   gap: 2rem;
   align-items: center;
+  padding-top: 3rem;
 }
 .auth__tabs {
   display: flex;
