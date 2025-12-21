@@ -3,7 +3,7 @@ import { useAuth } from "../context/AuthContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import Button from "../components/Button";
-import GradientText from '../component/GradientText'
+import GradientText from "../component/GradientText";
 
 export default function Header() {
   const { user, logout } = useAuth();
@@ -14,44 +14,52 @@ export default function Header() {
       await logout();
       navigate("/");
     } catch (err) {
-    console.error("Logout error", err);
-  }
+      console.error("Logout error", err);
+    }
   };
 
   return (
     <header className="header">
       <div className="header__container">
-       <div className='header__content'>
-         <div className='header__logo'>
+        <div className="header__content">
+          <div className="header__logo">
             <Link to="/">
-            <GradientText
-      colors={["#4089ffff", "#4079ff", "#2fe0ceff", "#4079ff", "#41d5e2ff"]}
-      animationSpeed={15}
-      showBorder={false}
-      className="custom-class"
-    >
-      Mr. Bookich
-    </GradientText>
-           </Link>
-         </div>
-  
+              <GradientText
+                colors={[
+                  "#4089ffff",
+                  "#4079ff",
+                  "#2fe0ceff",
+                  "#4079ff",
+                  "#41d5e2ff",
+                ]}
+                animationSpeed={15}
+                showBorder={false}
+                className="custom-class"
+              >
+                Mr. Bookich
+              </GradientText>
+            </Link>
+          </div>
+
           {user ? (
             <div>
-              <Link to="/profile" className='header__link'>
-                <FontAwesomeIcon icon={faUser} />
-              </Link>
+              <Button
+                text={<FontAwesomeIcon icon={faUser} />}
+                to="/profile"
+                className="header__link"
+              />
               <Button
                 text={"Logout"}
                 onClick={handleLogout}
                 className="header-logout-btn header__link"
-              ></Button>
+              />
             </div>
           ) : (
             <div>
-              <Link to="/auth" className='header__link'>Sign In</Link>
+              <Button text={"Sign In"} to="/auth" className="header__link" />
             </div>
           )}
-       </div>
+        </div>
       </div>
     </header>
   );
