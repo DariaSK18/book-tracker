@@ -5,13 +5,14 @@ import {
   logout as apiLogout,
   getMe,
   changePassword as apiChangePassword,
+  deleteAccount as apiDeleteAccount
 } from "../api/authApi";
 
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
-  // const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function init() {
@@ -24,10 +25,13 @@ export function AuthProvider({ children }) {
         } else {
           setUser(null);
         }
-      } catch (err) {
-        console.error(err);
-        setUser(null);
+      } finally {
+        setLoading(false);
       }
+      //  catch (err) {
+      //   console.error(err);
+      //   setUser(null);
+      // }
     }
     init();
   }, []);
@@ -64,15 +68,24 @@ export function AuthProvider({ children }) {
     }
   }
 
-   // --- change password ---
+  // --- change password ---
   const changePassword = async (currentPassword, newPassword) => {
     try {
       await apiChangePassword(currentPassword, newPassword);
     } catch (err) {
       console.error("Failed to change password", err);
-      throw err
+      throw err;
     }
   };
+
+// --- delete user account ---
+const deleteAccount = async () => {
+  try {
+    await apiDeleteAccount();
+  } finally {
+    setUser(null);
+  }
+};
 
   const value = {
     user,
@@ -80,8 +93,9 @@ export function AuthProvider({ children }) {
     register,
     logout,
     isAuthenticated: !!user,
-    // loading,
+    loading,
     changePassword,
+    deleteAccount
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
