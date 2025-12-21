@@ -93,3 +93,16 @@ export async function changePassword(currentPassword, newPassword) {
     throw new Error(data.message || "Failed to change password");
   }
 }
+
+// --- delete user account ---
+export async function deleteAccount() {
+  const res = await fetch(`${BASE_URL}/api/user/me`, {
+    method: "DELETE",
+    credentials: "include",
+  });
+
+  if (!res.ok) {
+    const data = await res.json();
+    throw new Error(data?.msg || "Failed to delete account");
+  }
+}
