@@ -34,9 +34,13 @@ Book.init(
       type: DataTypes.TEXT,
       allowNull: true,
     },
-    collection: {
-      type: DataTypes.STRING,
+    collection_id: {
+      type: DataTypes.INTEGER,
       allowNull: true,
+      references: {
+        model: "collection",
+        key: "id",
+      },
     },
     genre: {
       type: DataTypes.STRING,
