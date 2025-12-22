@@ -30,7 +30,7 @@ router.patch("/:id/favourite", isAuth, bookController.toggleFavourite);
 
 router
   .route("/:id")
-  .get(bookController.getOneBook) // ok
+  .get(isAuth, bookController.getOneBook) // ok
   .patch(
     isAuth,
     isAuthor,
