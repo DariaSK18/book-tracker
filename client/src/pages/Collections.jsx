@@ -11,12 +11,12 @@ import GlassIcons from "../component/GlassIcons";
 import { FiBook } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import { getCollections } from "../api/booksApi";
-// import { Link } from "react-router-dom";
+import formatLabel from "../utils/formatLabel";
 
 export default function Collections() {
   const [collections, setCollections] = useState([]);
   const navigate = useNavigate();
-  // console.log(collections);
+  console.log(collections);
 
   useEffect(() => {
     async function fetchCollections() {
@@ -61,7 +61,7 @@ export default function Collections() {
   const items = collections.map((col) => ({
     icon: <FiBook size={50} />,
     color: "#2fb9dcff",
-    label: col.label,
+    label: formatLabel(col.label),
     onClick: () => navigate(`/collection/${encodeURIComponent(col.slug)}`),
   }));
 

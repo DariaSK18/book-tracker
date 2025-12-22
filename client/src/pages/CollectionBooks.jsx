@@ -2,23 +2,28 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getBooksByCollection, deleteBook, toggleFavouriteBook } from "../api/booksApi";
 import BookCard from "../components/BookCard";
+import formatLabel from "../utils/formatLabel";
 
 export default function CollectionBooks() {
   const { slug } = useParams();
-  const collectionName = decodeURIComponent(slug);
+  // const collectionName = decodeURIComponent(slug);
   const [books, setBooks] = useState([]);
   const navigate = useNavigate();
 
+  const formattedLabel = formatLabel(slug);
+
+  // console.log(collectionName, slug, books);
+  
   // const hasFavourite = books.some((b) => b.is_favourite);
 
   useEffect(() => {
     async function fetchBooks() {
-      const res = await getBooksByCollection(collectionName);
+      const res = await getBooksByCollection(slug);
       setBooks(res.data.books);
     }
 
     fetchBooks();
-  }, [collectionName]);
+  }, [slug]);
   async function handleToggleFavourite(id) {
   try {
     const res = await toggleFavouriteBook(id);
@@ -50,7 +55,7 @@ export default function CollectionBooks() {
 
   return (
     <div className="collection-books">
-      <h2 className="collection-books__title">Collection: {slug}</h2>
+      <h2 className="collection-books__title">Collection: {formattedLabel}</h2>
       {books.length === 0 && <p>No books in this collection</p>}
       <div className="collection-books__wrapper">
         {books.map((book) => (
