@@ -5,6 +5,7 @@ import Progress from "./progress.mjs";
 import Rating from "./rating.mjs";
 import Category from "./category.mjs";
 import BookCategory from "./bookCategory.mjs";
+import ReadingLog from "./readingLog.mjs";
 
 Book.belongsTo(User, { foreignKey: "user_id", as: "user" });
 
@@ -70,4 +71,27 @@ Category.belongsToMany(Book, {
   as: "books",
 });
 
-export { Book, User, Note, Progress, Rating, Category, BookCategory };
+User.hasMany(ReadingLog, {
+  foreignKey: "user_id",
+  as: "readingLogs",
+  onDelete: "CASCADE",
+});
+
+ReadingLog.belongsTo(User, {
+  foreignKey: "user_id",
+  as: "user",
+});
+
+Book.hasMany(ReadingLog, {
+  foreignKey: "book_id",
+  as: "readingLogs",
+  onDelete: "SET NULL",
+});
+
+ReadingLog.belongsTo(Book, {
+  foreignKey: "book_id",
+  as: "book",
+});
+
+
+export { Book, User, Note, Progress, Rating, Category, BookCategory, ReadingLog };
