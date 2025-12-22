@@ -1,0 +1,49 @@
+@use 'variables' as *;
+
+.statistic {
+    // color: $border-color;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    align-items: center;
+    .statistic__title{
+       font-size: 1.5rem;
+       font-weight: 600;
+    }
+  .statistic-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    &__item{
+        padding: 1rem;
+        border: 0.1rem solid $box-shadow;
+        box-shadow: $box-shadow;
+        border-radius: 1rem;
+        display: flex;
+        gap: 1rem;
+        justify-content: space-between;
+        align-items: center;
+        // flex-basis: 20rem;
+        min-width: 30rem;
+        // backdrop-filter: blur(1rem);
+    }
+    &__icon{
+        color: $border-color;
+    }
+    &__text{
+        flex-grow: 1;
+        align-self: center;
+    }
+    &__values{
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+        // align-items: center;
+        flex-basis: 4rem;
+    }
+    &__nums{
+        color: $border-color;
+        font-weight: 900;
+    }
+  }
+}
