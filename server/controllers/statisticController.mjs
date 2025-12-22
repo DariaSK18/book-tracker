@@ -1,13 +1,30 @@
 import ReadingLog from "../models/readingLog.mjs";
 import { sendResponse } from "../utils/helpers/sendResponse.mjs";
 import AppError from "../utils/AppError.mjs";
+import { Op } from "sequelize";
+import getDateRange from "../utils/helpers/getDateRange.mjs";
 
 export const getReadingStatistics = async (req, res, next) => {
   const userId = req.user.id;
+  const { period = "all" } = req.query;
 
   try {
+
+    const range = getDateRange(period);
+    const where = { user_id: userId };
+
+    if (range) {
+      where.date = {
+        [Op.between]: [
+          range.start.toISOString().slice(0, 10),
+          range.end.toISOString().slice(0, 10),
+        ],
+      };
+    }
+
+
     const logs = await ReadingLog.findAll({
-      where: { user_id: userId },
+      where,
       order: [["date", "ASC"]],
     });
 
