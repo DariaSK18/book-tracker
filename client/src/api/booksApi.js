@@ -44,11 +44,11 @@ export async function createBook(bookData) {
   });
 
   if (!res.ok) {
-    const text = await res.text();
-  console.error("SERVER ERROR:", text);
-  throw new Error(text);
-    // const errorData = await res.json();
-    // throw new Error(errorData?.msg || "Failed to create book");
+  //   const text = await res.text();
+  // console.error("SERVER ERROR:", text);
+  // throw new Error(text);
+    const errorData = await res.json();
+    throw new Error(errorData?.msg || "Failed to create book");
   }
 
   return res.json();
