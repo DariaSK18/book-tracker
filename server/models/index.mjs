@@ -6,6 +6,7 @@ import Rating from "./rating.mjs";
 import Category from "./category.mjs";
 import BookCategory from "./bookCategory.mjs";
 import ReadingLog from "./readingLog.mjs";
+import Collection from "./collection.mjs";
 
 Book.belongsTo(User, { foreignKey: "user_id", as: "user" });
 
@@ -92,6 +93,27 @@ ReadingLog.belongsTo(Book, {
   foreignKey: "book_id",
   as: "book",
 });
+User.hasMany(Collection, {
+  foreignKey: "user_id",
+  as: "collections",
+  onDelete: "CASCADE",
+});
+
+Collection.belongsTo(User, {
+  foreignKey: "user_id",
+  as: "user",
+});
+
+Collection.hasMany(Book, {
+  foreignKey: "collection_id",
+  as: "books",
+  onDelete: "SET NULL",
+});
+
+Book.belongsTo(Collection, {
+  foreignKey: "collection_id",
+  as: "collection",
+});
 
 
-export { Book, User, Note, Progress, Rating, Category, BookCategory, ReadingLog };
+export { Book, User, Note, Progress, Rating, Category, BookCategory, ReadingLog, Collection };
