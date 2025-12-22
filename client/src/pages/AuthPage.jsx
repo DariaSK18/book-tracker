@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Login from "../components/Login";
 import Register from "../components/Register";
+import Button from "../components/Button";
 
 export default function Auth() {
   const [activeTab, setActiveTab] = useState("login");
@@ -9,18 +10,14 @@ export default function Auth() {
     <div className="auth">
       <div className="auth__tabs">
         <div id="btn" className={activeTab}></div>
-        <button
+        <Button
+        text={'Login'}
           className="auth__tab"
-          onClick={() => setActiveTab("login")}
-        >
-          Login
-        </button>
-        <button
+          onClick={() => setActiveTab("login")} />
+        <Button
+        text={'Register'}
           className="auth__tab"
-          onClick={() => setActiveTab("register")}
-        >
-          Register
-        </button>
+          onClick={() => setActiveTab("register")} />
       </div>
 
       <div className="auth__form">
