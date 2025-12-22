@@ -67,7 +67,7 @@ export default function UploadBook() {
 
   return (
     <div>
-      <h4>Add Book</h4>
+      {/* <h4>Add Book</h4> */}
 
       <form onSubmit={handleSubmit} className="book-form">
         <div className="top-btns">
