@@ -44,7 +44,7 @@ const valuesMap = {
 };
 
 export default function StatisticCard({ data }) {
-    console.log('data', data);
+    // console.log('data', data);
     
   return (
     <div className="statistic__statistic-card statistic-card">
