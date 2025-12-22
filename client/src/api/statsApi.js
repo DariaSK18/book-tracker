@@ -1,8 +1,8 @@
 const BASE_URL = import.meta.env.VITE_API_URL;
 
 // --- get all statistic ---
-export async function getAllStats() {
-  const res = await fetch(`${BASE_URL}/api/statistic`, {
+export async function getAllStats(period = "all") {
+  const res = await fetch(`${BASE_URL}/api/statistic?period=${period}`, {
     method: "GET",
     credentials: "include",
   });
