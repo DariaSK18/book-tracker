@@ -6,6 +6,7 @@ import { createBook } from "../api/booksApi";
 
 export default function UploadBook() {
   const navigate = useNavigate();
+  const [rating, setRating] = useState(0);
   const [bookData, setBookData] = useState({
     title: "",
     author: "",
@@ -14,8 +15,7 @@ export default function UploadBook() {
     collection: "",
     genre: "",
     readingStatus: "",
-    // image: null,
-    // urlImg: null,
+    pagesRead: null,
     image_url: "",
   });
 
@@ -25,20 +25,42 @@ export default function UploadBook() {
     { label: "Book I'm going to read", value: "will" },
   ];
 
-  // const handleFileChange = (e) => {
-  //   const file = e.target.files[0];
-  //   if (file) {
-  //     setBookData((prev) => ({
-  //       ...prev,
-  //       image: file,
-  //       urlImg: URL.createObjectURL(file),
-  //     }));
-  //   }
-  // };
+  const handleStarClick = (star) => {
+  setRating((prev) => (prev === star ? 0 : star));
+};
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setBookData((prev) => ({ ...prev, [name]: value }));
+
+    setBookData((prev) => {
+      if (name === "readingStatus") {
+        if (value === "done") {
+          return {
+            ...prev,
+            readingStatus: value,
+            pagesRead: Number(prev.numOfPages) || 0,
+          };
+        }
+
+        if (value === "will") {
+          setRating(0);
+          return {
+            ...prev,
+            readingStatus: value,
+            pagesRead: 0,
+          };
+        }
+      }
+      if (name === "numOfPages" && prev.readingStatus === "done") {
+        return {
+          ...prev,
+          numOfPages: value,
+          pagesRead: Number(value) || 0,
+        };
+      }
+
+      return { ...prev, [name]: value };
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -46,15 +68,20 @@ export default function UploadBook() {
 
     try {
       const payload = {
-        title: bookData.title,
-        author: bookData.author,
-        description: bookData.description,
+        title: bookData.title.trim(),
+        author: bookData.author.trim(),
+        description: bookData.description.trim(),
         pages_total: Number(bookData.numOfPages) || 0,
-        collection: bookData.collection,
-        genre: bookData.genre,
+        pages_read: Number(bookData.pagesRead) || 0,
         reading_status: bookData.readingStatus,
-        image_url: bookData.image_url,
+        // rating: bookData.readingStatus === "done" ? rating : 0,
+        collection: bookData.collection.trim(),
+        genre: bookData.genre.trim(),
+        image_url: bookData.image_url.trim(),
       };
+      if (bookData.readingStatus === "done" && rating > 0) {
+  payload.rating = rating;
+}
 
       await createBook(payload);
       toast.success("Book added successfully!");
@@ -123,22 +150,6 @@ export default function UploadBook() {
           </div>
 
           <div className="form-extra">
-            {/* <div className="radio-group">
-              {readingStatusOptions.map((option) => (
-                <label
-                  key={option.value}>
-                  <input
-                    type="radio"
-                    name="readingStatus"
-                    value={option.value}
-                    checked={bookData.readingStatus === option.value}
-                    onChange={handleChange}
-                  />{" "}
-                  <span className="custom-radio"></span>
-      <span className="radio-label">{option.label}</span>
-                </label>
-              ))}
-            </div> */}
             <div className="radio-group">
               {readingStatusOptions.map((option) => (
                 <label className="radio" key={option.value}>
@@ -153,9 +164,43 @@ export default function UploadBook() {
                   <span className="radio-label">{option.label}</span>
                 </label>
               ))}
+              {bookData.readingStatus === "now" && (
+               <>
+                  {/* <small>You can update progress later</small> */}
+                  <input
+                    type="number"
+                    placeholder="Pages read"
+                    name="pagesRead"
+                    value={bookData.pagesRead ?? ""}
+                    min={0}
+                    max={bookData.numOfPages}
+                    onChange={handleChange}
+                  />
+               </>
+              )}
+              {bookData.readingStatus === "done" && (
+                <>
+                  {/* <small>Book marked as finished — pages filled automatically</small> */}
+                  <div className="rating-input">
+                    <p>Rate this book</p>
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <span
+                        key={star}
+                        onClick={() => handleStarClick(star)}
+                        style={{
+                          cursor: "pointer",
+                          color: star <= rating ? "#f5b301" : "#ccc",
+                          fontSize: "24px",
+                        }}
+                      >
+                        ★
+                      </span>
+                    ))}
+                  </div>
+                </>
+              )}
             </div>
             <div className="form-extra__img">
-              {/* <input type="file" accept="image/*" onChange={handleFileChange} /> */}
               <input
                 name="image_url"
                 type="url"
@@ -169,22 +214,12 @@ export default function UploadBook() {
                   alt="Preview"
                   style={{ maxWidth: "400px" }}
                 />
-              )} 
-              {/* {bookData.urlImg && (
-                <img
-                  src={bookData.urlImg}
-                  alt="Preview"
-                  style={{ maxWidth: "400px" }}
-                />
-              )} */}
+              )}
             </div>
           </div>
         </div>
-
         <button type="submit">Add Book</button>
       </form>
-
-      {/* <pre>{JSON.stringify(bookData, null, 2)}</pre> */}
     </div>
   );
 }
