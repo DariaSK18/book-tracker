@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
-import { getAllBooks } from "../api/booksApi";
+import { getAllBooks, updateBook as updateBookRating } from "../api/booksApi";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectCoverflow, Pagination, Autoplay } from "swiper/modules";
-
 import "swiper/css";
 import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
@@ -17,6 +16,18 @@ export default function Home() {
   const [activeIndex, setActiveIndex] = useState(0);
   const activeBook = books[activeIndex];
 
+  const updateBook = async (updatedBook) => {
+    setBooks((prev) =>
+      prev.map((b) => (b.id === updatedBook.id ? updatedBook : b))
+    );
+    const { id, rating, reading_status, pages_read } = updatedBook;
+    try {
+      await updateBookRating(id, { rating, reading_status, pages_read });
+    } catch (err) {
+      console.error("Failed to update book on server", err);
+    }
+  };
+
   const progress =
     activeBook && activeBook.pages_total
       ? Math.round((activeBook.pages_read / activeBook.pages_total) * 100)
@@ -27,6 +38,17 @@ export default function Home() {
     will: "Not started yet",
     now: "Currently reading",
     done: "Book finished",
+  };
+
+  const saveRating = async (bookId, rating) => {
+    try {
+      await updateBookRating(bookId, { rating });
+      setBooks(prevBooks =>
+      prevBooks.map(b => b.id === bookId ? { ...b, rating } : b)
+    );
+    } catch (err) {
+      console.error("Failed to save rating", err);
+    }
   };
 
   useEffect(() => {
@@ -46,37 +68,37 @@ export default function Home() {
   return (
     <div className="home">
       {books.length > 0 && (
-      <Swiper
-        effect={"coverflow"}
-        grabCursor={true}
-        centeredSlides={true}
-        slidesPerView={2.4}
-        initialSlide={0}
-        // speed={1000}
-        parallax={true}
-        loop={true}
-        onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
-        coverflowEffect={{
-          rotate: -5,
-          stretch: 100,
-          depth: 100,
-          modifier: 1,
-          // slideShadows: true,
-        }}
-        // autoplay={{ delay: 3500, disableOnInteraction: false }}
-        pagination={true}
-        modules={[EffectCoverflow, Pagination]}
-        className="mySwiper"
-      >
-        {books.map((book) => (
-          <SwiperSlide key={book.id}>
-            <img
-              src={book.image_url || "/images/no_cover_available.png"}
-              alt={book.title}
-            />
-          </SwiperSlide>
-        ))}
-      </Swiper>
+        <Swiper
+          effect={"coverflow"}
+          grabCursor={true}
+          centeredSlides={true}
+          slidesPerView={2.4}
+          initialSlide={0}
+          // speed={1000}
+          parallax={true}
+          loop={true}
+          onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
+          coverflowEffect={{
+            rotate: -5,
+            stretch: 100,
+            depth: 100,
+            modifier: 1,
+            // slideShadows: true,
+          }}
+          // autoplay={{ delay: 3500, disableOnInteraction: false }}
+          pagination={true}
+          modules={[EffectCoverflow, Pagination]}
+          className="mySwiper"
+        >
+          {books.map((book) => (
+            <SwiperSlide key={book.id}>
+              <img
+                src={book.image_url || "/images/no_cover_available.png"}
+                alt={book.title}
+              />
+            </SwiperSlide>
+          ))}
+        </Swiper>
       )}
       <div className="home__books">
         {books[activeIndex] && (
@@ -94,7 +116,11 @@ export default function Home() {
               </span>
             </div>
             <div className="book__info">
-              <Button text={books[activeIndex].title} to={`/single-book/${books[activeIndex].id}`} className="book__title"/>
+              <Button
+                text={books[activeIndex].title}
+                to={`/single-book/${books[activeIndex].id}`}
+                className="book__title"
+              />
               <p className="book__author">by {books[activeIndex].author}</p>
               <p className="book__genre">{books[activeIndex].genre}</p>
               <p className="book__collection">
@@ -104,6 +130,8 @@ export default function Home() {
             <BookActions
               className="book__actions actions"
               book={books[activeIndex]}
+              onUpdateBook={updateBook}
+              onSaveRating={saveRating}
             />
           </div>
         )}
