@@ -50,12 +50,12 @@ export default function Statistic() {
           onClick={() => setActiveTab("year")} />
       </div>
 
-      <div className="statistic__page">
+      {/* <div className="statistic__page">
         {activeTab === "day" && <StatisticCard data={stats}/>}
         {activeTab === "week" && <StatisticCard data={stats}/>}
         {activeTab === "month" && <StatisticCard data={stats}/>}
         {activeTab === "year" && <StatisticCard data={stats}/>}
-      </div>
+      </div> */}
 
       <StatisticCard data={stats}/>
     </div>
