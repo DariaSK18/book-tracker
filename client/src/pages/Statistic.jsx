@@ -28,7 +28,7 @@ export default function Statistic() {
 
   return (
     <div className="statistic">
-      <h3 className="statistic__title">Statistic</h3>
+      {/* <h3 className="statistic__title">Statistic</h3> */}
 
       <div className="statistic__tabs">
         <div id="btn" className={activeTab}></div>
