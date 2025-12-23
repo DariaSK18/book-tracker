@@ -44,9 +44,10 @@ export default function ChangePassword() {
   return (
     <div className="change-password">
       <div className="change-password__box">
-        <h1>Change Password</h1>
+        {/* <h1>Change Password</h1> */}
+        <h3>Fill all the fields to change the password</h3>
         <form onSubmit={handleSubmit}>
-            <div className="password-wrapper">
+          <div className="password-wrapper">
             <input
               type={showCurrentPassword ? "text" : "password"}
               placeholder="Enter current password"
@@ -61,8 +62,8 @@ export default function ChangePassword() {
                 icon={showCurrentPassword ? faEyeSlash : faEye}
               />
             </div>
-            </div>
-            <div className="password-wrapper">
+          </div>
+          <div className="password-wrapper">
             <input
               type={showNewPassword ? "text" : "password"}
               placeholder="Enter new password"
@@ -74,8 +75,9 @@ export default function ChangePassword() {
               onClick={() => setShowNewPassword((prev) => !prev)}
             >
               <FontAwesomeIcon icon={showNewPassword ? faEyeSlash : faEye} />
-            </div></div>   
-            <div className="password-wrapper">
+            </div>
+          </div>
+          <div className="password-wrapper">
             <input
               type={showConfirmPassword ? "text" : "password"}
               placeholder="Confirm new password"
@@ -89,8 +91,11 @@ export default function ChangePassword() {
               <FontAwesomeIcon
                 icon={showConfirmPassword ? faEyeSlash : faEye}
               />
-            </div></div>
-          <button className="form-btn" type="submit">Change Password</button>
+            </div>
+          </div>
+          <button className="form-btn" type="submit">
+            Change Password
+          </button>
         </form>
       </div>
     </div>
