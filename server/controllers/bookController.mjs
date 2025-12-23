@@ -94,6 +94,7 @@ export const uploadBook = catchAsync(async (req, res, next) => {
       genre,
       pages_total,
       pages_read,
+      rating,
       reading_status,
       image_url,
     },
@@ -130,6 +131,7 @@ export const uploadBook = catchAsync(async (req, res, next) => {
     genre,
     pages_total,
     pages_read,
+    rating,
     reading_status,
     image_url,
     user_id: user.id,
@@ -157,6 +159,9 @@ export const updateBook = catchAsync(async (req, res, next) => {
       description,
       category,
       rating,
+      collection,
+      genre,
+      reading_status,
       pages_total,
       pages_read,
       image_url,
@@ -173,8 +178,11 @@ export const updateBook = catchAsync(async (req, res, next) => {
   if (description) book.description = description;
   if (category) book.category = category;
   if (rating) book.rating = rating;
-  if (pages_total) book.pages_total = pages_total;
   if (pages_read) book.pages_read = pages_read;
+  if (collection) book.collection = collection;
+  if (genre) book.genre = genre;
+  if (pages_total) book.pages_total = pages_total;
+  if (reading_status) book.reading_status = reading_status;
   if (image_url) book.image_url = image_url;
 
   const updated = await book.save();
