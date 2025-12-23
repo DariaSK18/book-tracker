@@ -1,13 +1,30 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import Button from "../components/Button";
+import { getAllBooks} from "../api/booksApi";
+import { useState, useEffect } from "react";
 
 export default function Profile() {
   const { user, loading, logout, deleteAccount } = useAuth();
   const navigate = useNavigate();
+  const [books, setBooks] = useState([]);
+
+  const booksAmount = books.length
+
+  useEffect(() => {
+      async function fetchBooks() {
+        try {
+          const res = await getAllBooks();
+          setBooks(res.data.books);
+        } catch (err) {
+          console.error("Failed to load books:", err);
+        }
+      }
+  
+      fetchBooks();
+    }, []);
 
   if (loading) return <p>Loading...</p>;
-  // if (!user) return <p>You are not logged in</p>;
 
   const capitilizedName =
     user.username[0].toUpperCase() + user.username.slice(1);
@@ -36,20 +53,26 @@ export default function Profile() {
 
   return (
     <div className="profile">
-      <div>{capitilizedName}'s Profile </div>
-      <div>Email: {user.email}</div>
-      <div><Button to="/change-password" text={"Change Password"} /></div>
-      <div>
-        <Button
-          text={"Logout"}
-          onClick={handleLogout}
+      <div className="profile__box">
+        <div className="profile__info">
+          <div className="profile__title">{capitilizedName}'s Profile </div>
+          <div><span>Email:</span> {user.email}</div>
+          <div><span>Books in library:</span> {booksAmount}</div>
+        </div>
+        <div className="profile__btns"><Button to="/change-password" text={"Change Password"} 
+        className="profile__btn"
         />
-      </div>
-      <div>
-        <Button
-          text={"Delete account"}
-          onClick={handleDelete}
-        />
+          <Button
+            text={"Logout"}
+            onClick={handleLogout}
+            className="profile__btn"
+          />
+          <Button
+            text={"Delete account"}
+            onClick={handleDelete}
+            className="profile__btn del-btn"
+          />
+        </div>
       </div>
     </div>
   );
