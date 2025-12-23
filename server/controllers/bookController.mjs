@@ -142,10 +142,16 @@ export const uploadBook = catchAsync(async (req, res, next) => {
 
 // --- get one book by id ---
 export const getOneBook = catchAsync(async (req, res, next) => {
+  const userId = req.user.id;
   const {
     params: { id },
   } = req;
-  const book = await Book.findByPk(id);
+  const book = await Book.findOne({
+    where: {
+      id,
+      user_id: userId,
+    },
+  });
   if (!book) return next(new AppError("Book not found", 404));
   sendResponse(res, 200, book);
 });
