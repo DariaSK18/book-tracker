@@ -42,7 +42,7 @@ export default function Header() {
           </div>
 
           {user ? (
-            <div>
+            <div className="header__user">
               <Button
                 text={<FontAwesomeIcon icon={faUser} />}
                 to="/profile"
