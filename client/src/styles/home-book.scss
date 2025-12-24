@@ -57,7 +57,7 @@
 }
 
 // ------------------
-.book{
+.book {
   margin-top: 2rem;
   // text-align: center;
   animation: fadeUp 0.7s ease-in-out;
@@ -95,7 +95,6 @@
       justify-content: space-around;
       align-items: center;
       .status__title {
-       
       }
       .status__pages {
       }
@@ -135,7 +134,7 @@
   align-items: center;
   gap: 0.5rem;
 }
-.icon-done{
+.icon-done {
   max-width: 3rem;
   max-height: 3rem;
   align-self: center;
@@ -145,13 +144,99 @@
   color: $star;
   font-size: 1.1rem;
 }
-.home{
+.home__section-top {
   display: flex;
   gap: 1rem;
   align-items: center;
   width: 100%;
 }
-.log-input{
+.home__section-bottom {
+  padding: 2rem 0;
+}
+.home__inputs-block {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+}
+.home__search {
+  position: relative;
+  input {
+    border: 0.1rem solid $border-color;
+    border-radius: 2rem;
+    padding: 0.5rem 1rem;
+  }
+  input::placeholder {
+    padding-left: 2rem;
+  }
+  .home__search-icon {
+    color: $border-color;
+    position: absolute;
+    top: 50%;
+    left: 1rem;
+    transform: translateY(-50%);
+  }
+}
+.home__sort{
+  display: flex;
+  gap: 1rem;
+}
+
+.custom-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  user-select: none;
+  font-size: 0.9rem;
+
+  input {
+    display: none;
+  }
+
+  .checkmark {
+    width: 1.2rem;
+    height: 1.2rem;
+    border: 0.1rem solid $border-color;
+    border-radius: 0.4rem;
+    position: relative;
+  }
+
+  input:checked + .checkmark {
+    background: $border-color;
+  }
+
+  input:checked + .checkmark::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 0.4rem;
+    height: 0.7rem;
+    border: solid white;
+    border-width: 0 0.15rem 0.15rem 0;
+    transform: translate(-50%, -60%) rotate(45deg);
+  }
+}
+
+select {
+  background: transparent;
+  border: 0.1rem solid $border-color;
+  border-radius: 2rem;
+  padding: 0.5rem 1rem;
+}
+.home__books-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  padding: 2rem 0;
+}
+.home__inputs-block {
+  display: flex;
+  justify-content: space-around;
+}
+.log-input {
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
@@ -159,18 +244,18 @@
   width: 100%;
   align-items: center;
   justify-content: center;
-  &__inputs{
+  &__inputs {
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
-    input{
+    input {
       border: 0.1rem solid black;
       border-radius: 2rem;
       padding: 0.5rem 1rem;
       max-width: 10rem;
     }
   }
-  &__btns{
+  &__btns {
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
