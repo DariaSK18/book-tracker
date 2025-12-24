@@ -28,9 +28,14 @@
     .header__link{
         color: $border-color;
         border: 0.1rem solid $border-color;
-        padding: 0.6rem;
+        padding: 0.5rem;
         border-radius: 10rem;
-        margin-right: 0.5rem;
     }
   }
+}
+.header__user{
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  align-items: center;
 }
