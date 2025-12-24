@@ -7,6 +7,14 @@ import BookActions from "../components/BookActions";
 import Rating from "../components/Rating";
 import Button from "../components/Button";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faBook,
+  faClock,
+  faCommentDots,
+  faRankingStar,
+  faChildren,
+} from "@fortawesome/free-solid-svg-icons";
 
 export default function SingleBook() {
   const { id } = useParams();
@@ -81,7 +89,7 @@ export default function SingleBook() {
       </div>
       <section className="single-book__stats">
         <div className="stat">
-          <i className="fa-solid fa-book-open"></i>
+           <FontAwesomeIcon icon={faBook} size="2x" />
           <div>
             <p className="stat__value">{book.pages_read}</p>
             <p className="stat__label">Pages read</p>
@@ -89,7 +97,7 @@ export default function SingleBook() {
         </div>
 
         <div className="stat">
-          <i className="fa-solid fa-clock"></i>
+           <FontAwesomeIcon icon={faClock} size="2x" />
           <div>
             <p className="stat__value">{book.minutes_read || 0}</p>
             <p className="stat__label">Minutes read</p>
@@ -97,15 +105,18 @@ export default function SingleBook() {
         </div>
       </section>
       <section className="single-book__review">
+        <FontAwesomeIcon icon={faCommentDots} size="2x" />
         <h2>Review</h2>
         <p>{book.review || "No review yet."}</p>
       </section>
       <section className="single-book__rating">
+        <FontAwesomeIcon icon={faRankingStar} size="2x"/>
         <h2>Rating</h2>
         <Rating rating={book.rating || 0} />
       </section>
 
       <section className="single-book__characters">
+        <FontAwesomeIcon icon={faChildren} size="2x"/>
         <h2>Characters</h2>
         {book.characters?.length ? (
           <ul>
