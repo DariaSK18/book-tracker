@@ -23,7 +23,7 @@ const iconsMap = {
 
 const labelsMap = {
   pagesRead: "Pages Read",
-  totalTime: "Total Time (min)",
+  totalTime: "Total Time",
   booksRead: "Books Read",
   totalReadingDays: "Reading Days",
   bestDayPages: "Best Day Pages",
