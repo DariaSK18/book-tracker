@@ -1,5 +1,10 @@
 import { useState, useEffect } from "react";
-import { getAllBooks, updateBook as updateBookRating } from "../api/booksApi";
+import {
+  getAllBooks,
+  updateBook as updateBookRating,
+  deleteBook,
+  toggleFavouriteBook,
+} from "../api/booksApi";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectCoverflow, Pagination, Autoplay } from "swiper/modules";
@@ -10,11 +15,20 @@ import "swiper/css/pagination";
 import BookActions from "../components/BookActions";
 import ProgressBar from "../components/ProgressBar";
 import Button from "../components/Button";
+import BookCard from "../components/BookCard";
+import { Link } from "react-router-dom";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
 export default function Home() {
   const [books, setBooks] = useState([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const activeBook = books[activeIndex];
+  const [search, setSearch] = useState("");
+  const [sort, setSort] = useState("");
+  const [statusFilter, setStatusFilter] = useState("");
+  const [onlyFavourites, setOnlyFavourites] = useState(false);
 
   const updateBook = async (updatedBook) => {
     setBooks((prev) =>
@@ -40,16 +54,78 @@ export default function Home() {
     done: "Book finished",
   };
 
+  const filteredAndSortedBooks = books
+    .filter((book) => {
+      const query = search.toLowerCase();
+      return (
+        book.title.toLowerCase().includes(query) ||
+        book.author?.toLowerCase().includes(query) ||
+        book.genre?.toLowerCase().includes(query)
+      );
+    })
+    .filter((book) =>
+      statusFilter ? book.reading_status === statusFilter : true
+    )
+    .filter((book) => (onlyFavourites ? book.is_favourite === true : true))
+    .sort((a, b) => {
+      switch (sort) {
+        case "title-asc":
+          return a.title.localeCompare(b.title);
+        case "title-desc":
+          return b.title.localeCompare(a.title);
+        case "pages-asc":
+          return a.pages_total - b.pages_total;
+        case "pages-desc":
+          return b.pages_total - a.pages_total;
+        case "rating-asc":
+          return (a.rating || 0) - (b.rating || 0);
+
+        case "rating-desc":
+          return (b.rating || 0) - (a.rating || 0);
+        default:
+          return 0;
+      }
+    });
+
   const saveRating = async (bookId, rating) => {
     try {
       await updateBookRating(bookId, { rating });
-      setBooks(prevBooks =>
-      prevBooks.map(b => b.id === bookId ? { ...b, rating } : b)
-    );
+      setBooks((prevBooks) =>
+        prevBooks.map((b) => (b.id === bookId ? { ...b, rating } : b))
+      );
     } catch (err) {
       console.error("Failed to save rating", err);
     }
   };
+
+  async function handleToggleFavourite(id) {
+    try {
+      const res = await toggleFavouriteBook(id);
+
+      setBooks((prev) =>
+        prev.map((book) =>
+          book.id === id ? { ...book, is_favourite: res.favourite } : book
+        )
+      );
+    } catch (err) {
+      alert(err.message);
+    }
+  }
+
+  async function handleDeleteBook(id) {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this book?"
+    );
+    if (!confirmed) return;
+
+    try {
+      await deleteBook(id);
+
+      setBooks((prev) => prev.filter((book) => book.id !== id));
+    } catch (err) {
+      alert(err.message);
+    }
+  }
 
   useEffect(() => {
     async function fetchBooks() {
@@ -67,74 +143,132 @@ export default function Home() {
 
   return (
     <div className="home">
-      {books.length > 0 && (
-        <Swiper
-          effect={"coverflow"}
-          grabCursor={true}
-          centeredSlides={true}
-          slidesPerView={2.4}
-          initialSlide={0}
-          // speed={1000}
-          parallax={true}
-          loop={true}
-          onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
-          coverflowEffect={{
-            rotate: -5,
-            stretch: 100,
-            depth: 100,
-            modifier: 1,
-            // slideShadows: true,
-          }}
-          // autoplay={{ delay: 3500, disableOnInteraction: false }}
-          pagination={true}
-          modules={[EffectCoverflow, Pagination]}
-          className="mySwiper"
-        >
-          {books.map((book) => (
-            <SwiperSlide key={book.id}>
-              <img
-                src={book.image_url || "/images/no_cover_available.png"}
-                alt={book.title}
-              />
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      )}
-      <div className="home__books">
-        {books[activeIndex] && (
-          <div className="home__content book" key={books[activeIndex].id}>
-            <div className="book__status status">
-              <span className="status__title">
-                {statusMap[books[activeIndex].reading_status] ||
-                  "Unknown status"}
-              </span>
-              <span className="status__pages">
-                <ProgressBar value={progress}>
-                  {books[activeIndex].pages_read}/
-                  {books[activeIndex].pages_total}
-                </ProgressBar>
-              </span>
-            </div>
-            <div className="book__info">
-              <Button
-                text={books[activeIndex].title}
-                to={`/single-book/${books[activeIndex].id}`}
-                className="book__title"
-              />
-              <p className="book__author">by {books[activeIndex].author}</p>
-              <p className="book__genre">{books[activeIndex].genre}</p>
-              <p className="book__collection">
-                {books[activeIndex].collection}
-              </p>
-            </div>
-            <BookActions
-              className="book__actions actions"
-              book={books[activeIndex]}
-              onUpdateBook={updateBook}
-              onSaveRating={saveRating}
-            />
-          </div>
+      <div className="home__section-top">
+        {books.length > 0 && (
+          <Swiper
+            effect={"coverflow"}
+            grabCursor={true}
+            centeredSlides={true}
+            slidesPerView={2.4}
+            initialSlide={0}
+            // speed={1000}
+            parallax={true}
+            loop={true}
+            onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
+            coverflowEffect={{
+              rotate: -5,
+              stretch: 100,
+              depth: 100,
+              modifier: 1,
+              // slideShadows: true,
+            }}
+            // autoplay={{ delay: 3500, disableOnInteraction: false }}
+            pagination={true}
+            modules={[EffectCoverflow, Pagination]}
+            className="mySwiper"
+          >
+            {books.map((book) => (
+              <SwiperSlide key={book.id}>
+                <img
+                  src={book.image_url || "/images/no_cover_available.png"}
+                  alt={book.title}
+                />
+              </SwiperSlide>
+            ))}
+          </Swiper>
         )}
+        <div className="home__books">
+          {books[activeIndex] && (
+            <div className="home__content book" key={books[activeIndex].id}>
+              <div className="book__status status">
+                <span className="status__title">
+                  {statusMap[books[activeIndex].reading_status] ||
+                    "Unknown status"}
+                </span>
+                <span className="status__pages">
+                  <ProgressBar value={progress}>
+                    {books[activeIndex].pages_read}/
+                    {books[activeIndex].pages_total}
+                  </ProgressBar>
+                </span>
+              </div>
+              <div className="book__info">
+                <Button
+                  text={books[activeIndex].title}
+                  to={`/single-book/${books[activeIndex].id}`}
+                  className="book__title"
+                />
+                <p className="book__author">by {books[activeIndex].author}</p>
+                <p className="book__genre">{books[activeIndex].genre}</p>
+                <p className="book__collection">
+                  {books[activeIndex].collection}
+                </p>
+              </div>
+              <BookActions
+                className="book__actions actions"
+                book={books[activeIndex]}
+                onUpdateBook={updateBook}
+                onSaveRating={saveRating}
+              />
+            </div>
+          )}
+        </div>
+      </div>
+      <div className="home__section-bottom">
+        <div className="home__inputs-block">
+          <div className="home__search">
+            <input
+              type="text"
+              placeholder="Search"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+            {!search && (
+            <FontAwesomeIcon icon={faMagnifyingGlass} className="home__search-icon"/> )}
+          </div>
+          <div className="home__sort">
+            <select value={sort} onChange={(e) => setSort(e.target.value)}>
+              <option value="">Sort</option>
+              <option value="title-asc">Title A–Z</option>
+              <option value="title-desc">Title Z–A</option>
+              <option value="pages-asc">Pages ↑</option>
+              <option value="pages-desc">Pages ↓</option>
+              <option value="rating-desc">Rating ★ → ☆</option>
+              <option value="rating-asc">Rating ☆ → ★</option>
+            </select>
+
+            <select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+            >
+              <option value="">All statuses</option>
+              <option value="will">Will read</option>
+              <option value="now">Reading now</option>
+              <option value="done">Finished</option>
+            </select>
+            <label className="custom-checkbox">
+              <input
+                type="checkbox"
+                checked={onlyFavourites}
+                onChange={(e) => setOnlyFavourites(e.target.checked)}
+              />
+              <span className="checkmark"></span>
+              Favourites
+            </label>
+          </div>
+        </div>
+        <div className="home__books-list">
+          {filteredAndSortedBooks?.length === 0 && <p>No books found!</p>}
+          {filteredAndSortedBooks?.map((book) => (
+            <Link to={`/single-book/${book.id}`}>
+              <BookCard
+                data={book}
+                onDelete={handleDeleteBook}
+                onToggleFavourite={handleToggleFavourite}
+              />
+            </Link>
+          ))}
+        </div>
       </div>
     </div>
   );
