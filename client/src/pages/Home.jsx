@@ -6,6 +6,18 @@ import {
   toggleFavouriteBook,
 } from "../api/booksApi";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faBook,
+  faXmark,
+  faHeart as faHeartSolid,
+  faMagnifyingGlass,
+} from "@fortawesome/free-solid-svg-icons";
+import {
+  // faCircleXmark as faCircleXmarkReg,
+  faHeart as faHeartReg,
+} from "@fortawesome/free-regular-svg-icons";
+
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectCoverflow, Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
@@ -17,9 +29,6 @@ import ProgressBar from "../components/ProgressBar";
 import Button from "../components/Button";
 import BookCard from "../components/BookCard";
 import { Link } from "react-router-dom";
-
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
 export default function Home() {
   const [books, setBooks] = useState([]);
@@ -99,16 +108,24 @@ export default function Home() {
   };
 
   async function handleToggleFavourite(id) {
+    setBooks((prev) =>
+    prev.map((book) =>
+      book.id === id
+        ? { ...book, is_favourite: !book.is_favourite }
+        : book
+    )
+  );
     try {
-      const res = await toggleFavouriteBook(id);
-
-      setBooks((prev) =>
-        prev.map((book) =>
-          book.id === id ? { ...book, is_favourite: res.favourite } : book
-        )
-      );
+      await toggleFavouriteBook(id);
     } catch (err) {
-      alert(err.message);
+      setBooks((prev) =>
+      prev.map((book) =>
+        book.id === id
+          ? { ...book, is_favourite: !book.is_favourite }
+          : book
+      )
+    );
+    alert("Failed to update favourite", err);
     }
   }
 
@@ -224,7 +241,11 @@ export default function Home() {
               onChange={(e) => setSearch(e.target.value)}
             />
             {!search && (
-            <FontAwesomeIcon icon={faMagnifyingGlass} className="home__search-icon"/> )}
+              <FontAwesomeIcon
+                icon={faMagnifyingGlass}
+                className="home__search-icon"
+              />
+            )}
           </div>
           <div className="home__sort">
             <select value={sort} onChange={(e) => setSort(e.target.value)}>
@@ -257,15 +278,44 @@ export default function Home() {
             </label>
           </div>
         </div>
-        <div className="home__books-list">
+        <div className="home__books-list book">
           {filteredAndSortedBooks?.length === 0 && <p>No books found!</p>}
           {filteredAndSortedBooks?.map((book) => (
-            <Link to={`/single-book/${book.id}`}>
-              <BookCard
-                data={book}
-                onDelete={handleDeleteBook}
-                onToggleFavourite={handleToggleFavourite}
-              />
+            <Link to={`/single-book/${book.id}`} >
+              <div key={book.id} className="book__item">
+                <div className="book__content">
+                  <div className="book__icon">
+                    <FontAwesomeIcon icon={faBook} size="2x" />
+                  </div>
+                  <div className="book__text">
+                    <p className="book__title">{book.title}</p>
+                    <p>
+                      by <span className="book__author">{book.author}</span>
+                    </p>
+                  </div>
+                </div>
+                <div className="book__actions">
+                  <FontAwesomeIcon
+                    className={`book__heart ${book.is_favourite ? "active" : ""}`}
+  icon={book.is_favourite ? faHeartSolid : faHeartReg}
+                    size="2x"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      handleToggleFavourite(book.id);
+                    }}
+                  />
+                  <FontAwesomeIcon
+                    icon={faXmark}
+                    size="2x"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      handleDeleteBook(book.id);
+                    }}
+                  />
+                </div>
+              </div>
             </Link>
           ))}
         </div>
