@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { getBookById } from "../api/booksApi";
+import { getBookById, deleteBook } from "../api/booksApi";
 
 import ProgressBar from "../components/ProgressBar";
 import BookActions from "../components/BookActions";
@@ -35,13 +35,28 @@ export default function SingleBook() {
   }, [id]);
   //  console.log(book);
 
+  async function handleDeleteBook(id) {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this book?"
+    );
+    if (!confirmed) return;
+
+    try {
+      await deleteBook(id);
+
+      setBook((prev) => prev.filter((book) => book.id !== id));
+    } catch (err) {
+      alert(err.message);
+    }
+  }
+
   const statusMap = {
     will: "Not started yet",
     now: "Currently reading",
     done: "Book finished",
   };
 
-  if (!book) return <p>Loading...</p>
+  if (!book) return <p>Loading...</p>;
 
   const progress =
     book.pages_total > 0
@@ -49,93 +64,96 @@ export default function SingleBook() {
       : 0;
 
   return (
-        <div className="single-book">
-      <div className="home">
+    <div className="single-book">
+      <div className="single-book__top-section">
         <div className="single-book__cover">
           <img
             src={book.image_url || "/images/no_cover_available.png"}
-            style={{width: "180px"}}
+            style={{ width: "180px" }}
             alt={book.title}
           />
         </div>
-
-        <div className="home__books">
-          <div className="home__content book">
-            <div className="book__status status">
-              <span className="status__title">
-                {statusMap[book.reading_status] || "Unknown status"}
-              </span>
-              <span className="status__pages">
-                <ProgressBar value={progress}>
-                  {book.pages_read}/{book.pages_total}
-                </ProgressBar>
-              </span>
-            </div>
-
-            <div className="book__info">
-              <h1 className="book__title">{book.title}</h1>
-              <p className="book__author">by {book.author}</p>
-              <p className="book__genre">{book.genre}</p>
-              <p className="book__collection">{book.collection}</p>
-            </div>
-
-            <BookActions
-              book={book}
-              onUpdateBook={setBook}
-              onSaveRating={setBook}
-            />
+        <div className="single-book__content book">
+          <div className="book__status status">
+            <span className="status__title">
+              {statusMap[book.reading_status] || "Unknown status"}
+            </span>
+            <span className="status__pages">
+              <ProgressBar value={progress}>
+                {book.pages_read}/{book.pages_total}
+              </ProgressBar>
+            </span>
           </div>
+
+          <div className="book__info">
+            <h1 className="book__title">{book.title}</h1>
+            <p className="book__author">by {book.author}</p>
+            <p className="book__genre">{book.genre}</p>
+            <p className="book__collection">{book.collection}</p>
+          </div>
+
+          <BookActions
+            book={book}
+            onUpdateBook={setBook}
+            onSaveRating={setBook}
+          />
         </div>
       </div>
-      <section className="single-book__stats">
-        <div className="stat">
-           <FontAwesomeIcon icon={faBook} size="2x" />
-          <div>
-            <p className="stat__value">{book.pages_read}</p>
-            <p className="stat__label">Pages read</p>
+      <div className="single-book__bottom-section">
+        <div className="single-book__stats">
+          <div className="stat">
+            <FontAwesomeIcon icon={faBook} size="2x" />
+            <div>
+              <p className="stat__value">{book.pages_read}</p>
+              <p className="stat__label">Pages read</p>
+            </div>
+          </div>
+  
+          <div className="stat">
+            <FontAwesomeIcon icon={faClock} size="2x" />
+            <div>
+              <p className="stat__value">{book.minutes_read || 0}</p>
+              <p className="stat__label">Minutes read</p>
+            </div>
           </div>
         </div>
-
-        <div className="stat">
-           <FontAwesomeIcon icon={faClock} size="2x" />
-          <div>
-            <p className="stat__value">{book.minutes_read || 0}</p>
-            <p className="stat__label">Minutes read</p>
-          </div>
+        <div className="single-book__review">
+            <div className="single-book__title-box">
+              <h2>Review</h2>
+              <FontAwesomeIcon icon={faCommentDots} size="2x" />
+            </div>
+          <p>{book.review || "No review yet."}</p>
         </div>
-      </section>
-      <section className="single-book__review">
-        <FontAwesomeIcon icon={faCommentDots} size="2x" />
-        <h2>Review</h2>
-        <p>{book.review || "No review yet."}</p>
-      </section>
-      <section className="single-book__rating">
-        <FontAwesomeIcon icon={faRankingStar} size="2x"/>
-        <h2>Rating</h2>
-        <Rating rating={book.rating || 0} />
-      </section>
-
-      <section className="single-book__characters">
-        <FontAwesomeIcon icon={faChildren} size="2x"/>
-        <h2>Characters</h2>
-        {book.characters?.length ? (
-          <ul>
-            {book.characters.map((char, i) => (
-              <li key={i}>{char}</li>
-            ))}
-          </ul>
-        ) : (
-          <p>No characters added.</p>
-        )}
-      </section>
-
-      <section className="single-book__danger">
-        <Button
-          text="Delete book"
-          className="danger-btn"
-          // onClick={handleDeleteBook}
-        />
-      </section>
+        <div className="single-book__rating">
+          <div className="single-book__title-box">
+            <h2>Rating</h2>
+            <FontAwesomeIcon icon={faRankingStar} size="2x" />
+          </div>
+          <Rating rating={book.rating || 0} />
+        </div>
+        <div className="single-book__characters">
+          <div className="single-book__title-box">
+            <h2>Characters</h2>
+            <FontAwesomeIcon icon={faChildren} size="2x" />
+          </div>
+          {book.characters?.length ? (
+            <ul>
+              {book.characters.map((char, i) => (
+                <li key={i}>{char}</li>
+              ))}
+            </ul>
+          ) : (
+            <p>No characters added.</p>
+          )}
+        </div>
+        <div className="single-book__delete">
+          <Button
+            text="Delete book"
+            className="del-btn"
+            onClick={handleDeleteBook}
+          />
+        </div>
+      </div>
     </div>
   );
 }
