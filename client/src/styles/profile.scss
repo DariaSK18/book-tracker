@@ -35,10 +35,10 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    .del-btn {
-    // border: 0.1rem solid red;
-    background: linear-gradient(to right, #f06c8464, #d9ab2d40, #f06c8464);
-    }
+    // .del-btn {
+    // // border: 0.1rem solid red;
+    // background: linear-gradient(to right, #f06c8464, #d9ab2d40, #f06c8464);
+    // }
   }
   &__btn {
     width: 14rem;
@@ -52,3 +52,13 @@
     text-align: center;
   }
 }
+.del-btn {
+    width: 14rem;
+    padding: 1rem;
+    cursor: pointer;
+    border-radius: 2rem;
+    font-weight: 500;
+    font-size: 1.2rem;
+    text-align: center;
+    background: linear-gradient(to right, #f06c8464, #d9ab2d40, #f06c8464);
+    }

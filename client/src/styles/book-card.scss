@@ -20,9 +20,9 @@
     border-radius: 50%;
     transition: all 0.3s ease-in-out;
   }
-   &__btn-del:hover{
+  &__btn-del:hover {
     transform: scale(1.1);
-   }
+  }
 
   &__image {
     object-fit: cover;
@@ -53,7 +53,7 @@
     transition: all 0.3s ease-in-out;
     font-size: 1.2rem;
   }
-  &__btn-like:hover{
+  &__btn-like:hover {
     transform: scale(1.3);
   }
 }
