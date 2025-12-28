@@ -19,7 +19,6 @@ export const router = createBrowserRouter([
   {
     element: <MainLayout />,
     children: [
-      { path: "/", element: <Home /> },
       { path: "/auth", element: <AuthPage /> },
       { path: "/login", element: <Login /> },
       { path: "/register", element: <Register /> },
@@ -27,6 +26,7 @@ export const router = createBrowserRouter([
       {
         element: <ProtectedRoute />,
         children: [
+          { path: "/", element: <Home /> },
           { path: "/goals", element: <Goals /> },
           { path: "/statistic", element: <Statistic /> },
           { path: "/collections", element: <Collections /> },
