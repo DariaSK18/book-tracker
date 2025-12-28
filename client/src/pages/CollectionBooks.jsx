@@ -29,16 +29,24 @@ export default function CollectionBooks() {
     fetchBooks();
   }, [slug]);
   async function handleToggleFavourite(id) {
+    setBooks((prev) =>
+    prev.map((book) =>
+      book.id === id
+        ? { ...book, is_favourite: !book.is_favourite }
+        : book
+    )
+  );
     try {
-      const res = await toggleFavouriteBook(id);
-
-      setBooks((prev) =>
-        prev.map((book) =>
-          book.id === id ? { ...book, is_favourite: res.favourite } : book
-        )
-      );
+      await toggleFavouriteBook(id);
     } catch (err) {
-      alert(err.message);
+      setBooks((prev) =>
+      prev.map((book) =>
+        book.id === id
+          ? { ...book, is_favourite: !book.is_favourite }
+          : book
+      )
+    );
+    alert("Failed to update favourite", err);
     }
   }
 
