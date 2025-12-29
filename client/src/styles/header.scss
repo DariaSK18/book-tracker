@@ -20,6 +20,11 @@
     //   font-family: "Lobster", sans-serif;
       font-family: "Paytone One", sans-serif; //1
     //   font-family: "Caveat", cursive;
+    @media (max-width: 30rem) {
+      flex-grow: 0;
+      margin-left: 0;
+    transform: none;
+    }
       font-weight: bold;
       .custom-class{
         padding: 1rem;

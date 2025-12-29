@@ -8,6 +8,7 @@
   flex-direction: column;
   gap: 2rem;
   align-items: center;
+  
   .statistic__title {
     font-size: 1.5rem;
     font-weight: 600;
@@ -27,6 +28,9 @@
       align-items: center;
       // flex-basis: 20rem;
       min-width: 30rem;
+      @media (max-width: 30rem) {
+      min-width: 20rem;
+    }
       // backdrop-filter: blur(1rem);
     }
     &__icon {
@@ -57,6 +61,9 @@
   border-radius: 2rem;
   position: relative;
   animation: animBTN 5s linear infinite;
+  @media (max-width: 30rem) {
+      gap: 0.3rem;
+    }
 
   #btn {
     position: absolute;
@@ -95,5 +102,9 @@
     min-width: 7rem;
     font-weight: 500;
     font-size: 1.2rem;
+    @media (max-width: 30rem) {
+      min-width: 5rem;
+      font-size: 1rem;
+    }
   }
 }
