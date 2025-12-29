@@ -86,7 +86,7 @@ ReadingLog.belongsTo(User, {
 Book.hasMany(ReadingLog, {
   foreignKey: "book_id",
   as: "readingLogs",
-  onDelete: "SET NULL",
+  onDelete: "CASCADE",
 });
 
 ReadingLog.belongsTo(Book, {
@@ -107,7 +107,7 @@ Collection.belongsTo(User, {
 Collection.hasMany(Book, {
   foreignKey: "collection_id",
   as: "books",
-  onDelete: "SET NULL",
+  onDelete: "CASCADE",
 });
 
 Book.belongsTo(Collection, {
