@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate} from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-// import Alert from "../components/Alert";
+import { useAlert } from "../context/AlertContext";
 // import "../styles/login.css";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -19,7 +19,7 @@ export default function Register() {
 
   const navigate = useNavigate();
   const { register } = useAuth();
-  // const { showAlert } = useAlert();
+  const { showAlert } = useAlert();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -27,7 +27,7 @@ export default function Register() {
     if (password !== confirmPassword) {
       console.log("Psw not matched");
 
-      // showAlert("error", "Passwords do not match");
+      showAlert("error", "Passwords do not match");
       return;
     }
 
@@ -35,9 +35,8 @@ export default function Register() {
       await register(username, email, password);
       navigate("/");
     } catch (err) {
-      console.log(err);
-
-      // showAlert("error", err.message);
+      // console.log(err);
+      showAlert("error", err.message);
     }
   };
 
