@@ -1,11 +1,13 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { getBookById, deleteBook } from "../api/booksApi";
+import ConfirmModal from "../components/ConfirmModal";
 
 import ProgressBar from "../components/ProgressBar";
 import BookActions from "../components/BookActions";
 import Rating from "../components/Rating";
 import Button from "../components/Button";
+import { useAlert } from "../context/AlertContext";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -18,8 +20,11 @@ import {
 
 export default function SingleBook() {
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const [book, setBook] = useState(null);
+   const [showConfirm, setShowConfirm] = useState(false);
+  const { showAlert } = useAlert();
 
   useEffect(() => {
     async function fetchBook() {
@@ -33,20 +38,23 @@ export default function SingleBook() {
 
     if (id) fetchBook();
   }, [id]);
-  //  console.log(book);
+  // console.log(book);
 
   async function handleDeleteBook(id) {
-    const confirmed = window.confirm(
-      "Are you sure you want to delete this book?"
-    );
-    if (!confirmed) return;
+    // const confirmed = window.confirm(
+    //   "Are you sure you want to delete this book?"
+    // );
+    // if (!confirmed) return;
 
     try {
       await deleteBook(id);
-
-      setBook((prev) => prev.filter((book) => book.id !== id));
+      setBook(null);
+      navigate("/");
+      // setBook((prev) => prev.filter((book) => book.id !== id));
+      showAlert("success", "Book deleted successfully");
     } catch (err) {
-      alert(err.message);
+      // alert(err.message);
+      showAlert("error", err.message);
     }
   }
 
@@ -57,6 +65,7 @@ export default function SingleBook() {
   };
 
   if (!book) return <p>Loading...</p>;
+  // console.log(book);
 
   const progress =
     book.pages_total > 0
@@ -108,20 +117,22 @@ export default function SingleBook() {
               <p className="stat__label">Pages read</p>
             </div>
           </div>
-  
+
           <div className="stat">
             <FontAwesomeIcon icon={faClock} size="2x" />
             <div>
-              <p className="stat__value">{book.minutes_read || 0}</p>
+              <p className="stat__value">
+                {book.readingLogs?.[0]?.minutes_read || 0}
+              </p>
               <p className="stat__label">Minutes read</p>
             </div>
           </div>
         </div>
         <div className="single-book__review">
-            <div className="single-book__title-box">
-              <h2>Review</h2>
-              <FontAwesomeIcon icon={faCommentDots} size="2x" />
-            </div>
+          <div className="single-book__title-box">
+            <h2>Review</h2>
+            <FontAwesomeIcon icon={faCommentDots} size="2x" />
+          </div>
           <p>{book.review || "No review yet."}</p>
         </div>
         <div className="single-book__rating">
@@ -150,9 +161,19 @@ export default function SingleBook() {
           <Button
             text="Delete book"
             className="del-btn"
-            onClick={handleDeleteBook}
+            // onClick={() => handleDeleteBook(book.id)}
+            onClick={() => setShowConfirm(true)} 
           />
         </div>
+        <ConfirmModal
+        isOpen={showConfirm}
+        message="Are you sure you want to delete this book?"
+        onConfirm={() => {
+          handleDeleteBook(book.id);
+          setShowConfirm(false);
+        }}
+        onCancel={() => setShowConfirm(false)}
+      />
       </div>
     </div>
   );

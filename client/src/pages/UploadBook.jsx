@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { createBook } from "../api/booksApi";
+import { useAlert } from "../context/AlertContext";
 
 export default function UploadBook() {
   const navigate = useNavigate();
   const [rating, setRating] = useState(0);
+   const { showAlert } = useAlert();
   const [bookData, setBookData] = useState({
     title: "",
     author: "",
@@ -84,11 +86,11 @@ export default function UploadBook() {
 }
 
       await createBook(payload);
-      toast.success("Book added successfully!");
+      showAlert("success", "Book added successfully!");
       navigate("/");
     } catch (err) {
       console.error(err);
-      toast.error("Failed to add book");
+      showAlert("error", err.message || "Failed to add book");
     }
   };
 

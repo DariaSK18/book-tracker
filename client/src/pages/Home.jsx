@@ -5,6 +5,7 @@ import {
   deleteBook,
   toggleFavouriteBook,
 } from "../api/booksApi";
+import ConfirmModal from "../components/ConfirmModal";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -27,7 +28,7 @@ import "swiper/css/pagination";
 import BookActions from "../components/BookActions";
 import ProgressBar from "../components/ProgressBar";
 import Button from "../components/Button";
-import BookCard from "../components/BookCard";
+// import BookCard from "../components/BookCard";
 import { Link } from "react-router-dom";
 
 export default function Home() {
@@ -38,6 +39,7 @@ export default function Home() {
   const [sort, setSort] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
   const [onlyFavourites, setOnlyFavourites] = useState(false);
+  const [confirmBookId, setConfirmBookId] = useState(null);
 
   const updateBook = async (updatedBook) => {
     setBooks((prev) =>
@@ -109,31 +111,27 @@ export default function Home() {
 
   async function handleToggleFavourite(id) {
     setBooks((prev) =>
-    prev.map((book) =>
-      book.id === id
-        ? { ...book, is_favourite: !book.is_favourite }
-        : book
-    )
-  );
+      prev.map((book) =>
+        book.id === id ? { ...book, is_favourite: !book.is_favourite } : book
+      )
+    );
     try {
       await toggleFavouriteBook(id);
     } catch (err) {
       setBooks((prev) =>
-      prev.map((book) =>
-        book.id === id
-          ? { ...book, is_favourite: !book.is_favourite }
-          : book
-      )
-    );
-    alert("Failed to update favourite", err);
+        prev.map((book) =>
+          book.id === id ? { ...book, is_favourite: !book.is_favourite } : book
+        )
+      );
+      alert("Failed to update favourite", err);
     }
   }
 
   async function handleDeleteBook(id) {
-    const confirmed = window.confirm(
-      "Are you sure you want to delete this book?"
-    );
-    if (!confirmed) return;
+    // const confirmed = window.confirm(
+    //   "Are you sure you want to delete this book?"
+    // );
+    // if (!confirmed) return;
 
     try {
       await deleteBook(id);
@@ -281,8 +279,8 @@ export default function Home() {
         <div className="home__books-list book">
           {filteredAndSortedBooks?.length === 0 && <p>No books found!</p>}
           {filteredAndSortedBooks?.map((book) => (
-            <Link to={`/single-book/${book.id}`} >
-              <div key={book.id} className="book__item">
+            <div key={book.id} className="book__item">
+              <Link to={`/single-book/${book.id}`}>
                 <div className="book__content">
                   <div className="book__icon">
                     <FontAwesomeIcon icon={faBook} size="2x" />
@@ -294,29 +292,39 @@ export default function Home() {
                     </p>
                   </div>
                 </div>
-                <div className="book__actions">
-                  <FontAwesomeIcon
-                    className={`book__heart ${book.is_favourite ? "active" : ""}`}
-  icon={book.is_favourite ? faHeartSolid : faHeartReg}
-                    size="2x"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      handleToggleFavourite(book.id);
-                    }}
-                  />
-                  <FontAwesomeIcon
-                    icon={faXmark}
-                    size="2x"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      handleDeleteBook(book.id);
-                    }}
-                  />
-                </div>
+              </Link>
+              <div className="book__actions">
+                <FontAwesomeIcon
+                  className={`book__heart ${book.is_favourite ? "active" : ""}`}
+                  icon={book.is_favourite ? faHeartSolid : faHeartReg}
+                  size="2x"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    handleToggleFavourite(book.id);
+                  }}
+                />
+                <FontAwesomeIcon
+                  icon={faXmark}
+                  size="2x"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    // handleDeleteBook(book.id);
+                    setConfirmBookId(book.id);
+                  }}
+                />
               </div>
-            </Link>
+              <ConfirmModal
+                isOpen={confirmBookId === book.id}
+                message="Are you sure you want to delete this book?"
+                onConfirm={async () => {
+                  await handleDeleteBook(book.id);
+                  setConfirmBookId(null);
+                }}
+                onCancel={() => setConfirmBookId(null)}
+              />
+            </div>
           ))}
         </div>
       </div>

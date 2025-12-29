@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
-// import Alert from "../components/Alert";
+import Alert from "../components/Alert";
 // import "../styles/login.css";
-// import { useAlert } from "../context/AlertContext";
+import { useAlert } from "../context/AlertContext";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
@@ -16,7 +16,7 @@ export default function ChangePassword() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   // const [alert, setAlert] = useState(null);
   const { changePassword } = useAuth();
-  // const { showAlert } = useAlert();
+  const { showAlert } = useAlert();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,20 +24,20 @@ export default function ChangePassword() {
     if (newPassword !== confirmPassword) {
       console.log("Passwords do not match");
 
-      // showAlert("error", "Passwords do not match");
+      showAlert("error", "Passwords do not match");
       return;
     }
 
     try {
       await changePassword(currentPassword, newPassword);
-      // showAlert("success", "Password changed successfully!");
+      showAlert("success", "Password changed successfully!");
       setCurrentPassword("");
       setNewPassword("");
       setConfirmPassword("");
     } catch (err) {
       console.log(err);
 
-      // showAlert("error", err.message || "Failed to change password");
+      showAlert("error", err.message || "Failed to change password");
     }
   };
 
