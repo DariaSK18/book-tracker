@@ -1,0 +1,15 @@
+.book-grid {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  background: #000;
+}
+.book-grid .book-form input {
+  max-width: 20rem;
+  border: 0.1rem solid rgb(0, 0, 0);
+  padding: 1rem;
+  border-radius: 1rem;
+  width: 100%;
+  min-width: 20rem;
+  background: none;
+}

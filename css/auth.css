@@ -1,0 +1,158 @@
+@-webkit-keyframes animBTN {
+  0% {
+    -webkit-box-shadow: 0 0 10px 9px rgba(3, 169, 244, 0.3);
+            box-shadow: 0 0 10px 9px rgba(3, 169, 244, 0.3);
+  }
+  33% {
+    -webkit-box-shadow: 0 0 10px 9px rgba(244, 65, 165, 0.3);
+            box-shadow: 0 0 10px 9px rgba(244, 65, 165, 0.3);
+  }
+  66.9% {
+    -webkit-box-shadow: 0 0 10px 9px rgba(255, 235, 59, 0.3);
+            box-shadow: 0 0 10px 9px rgba(255, 235, 59, 0.3);
+  }
+  100% {
+    -webkit-box-shadow: 0 0 10px 9px rgba(3, 169, 244, 0.3);
+            box-shadow: 0 0 10px 9px rgba(3, 169, 244, 0.3);
+  }
+}
+@keyframes animBTN {
+  0% {
+    -webkit-box-shadow: 0 0 10px 9px rgba(3, 169, 244, 0.3);
+            box-shadow: 0 0 10px 9px rgba(3, 169, 244, 0.3);
+  }
+  33% {
+    -webkit-box-shadow: 0 0 10px 9px rgba(244, 65, 165, 0.3);
+            box-shadow: 0 0 10px 9px rgba(244, 65, 165, 0.3);
+  }
+  66.9% {
+    -webkit-box-shadow: 0 0 10px 9px rgba(255, 235, 59, 0.3);
+            box-shadow: 0 0 10px 9px rgba(255, 235, 59, 0.3);
+  }
+  100% {
+    -webkit-box-shadow: 0 0 10px 9px rgba(3, 169, 244, 0.3);
+            box-shadow: 0 0 10px 9px rgba(3, 169, 244, 0.3);
+  }
+}
+[class*=__box] {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  gap: 2rem;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.auth {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  gap: 2rem;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.auth__tabs {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 1rem;
+  border: 0.1rem solid rgb(0, 0, 0);
+  border-radius: 2rem;
+  max-width: -webkit-fit-content;
+  max-width: -moz-fit-content;
+  max-width: fit-content;
+  position: relative;
+  -webkit-animation: animBTN 5s linear infinite;
+          animation: animBTN 5s linear infinite;
+}
+.auth__tabs #btn {
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  background: -webkit-gradient(linear, right top, left top, from(#57aab4), to(#57aab4));
+  background: linear-gradient(to left, #57aab4, #57aab4);
+  border-radius: 2rem;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+}
+.auth__tabs #btn.login {
+  left: 0;
+}
+.auth__tabs #btn.register {
+  left: 50%;
+}
+.auth__tabs .auth__tab {
+  padding: 1rem;
+  border-radius: 2rem;
+  min-width: 10rem;
+  font-weight: 500;
+  font-size: 1.2rem;
+}
+.auth__tabs .active {
+  border: 0.1rem solid rgb(0, 0, 0);
+  background: rgb(140, 203, 140);
+}
+
+form {
+  padding: 1rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 1rem;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+form .password-wrapper {
+  position: relative;
+}
+form input, form textarea {
+  border: 0.1rem solid rgb(0, 0, 0);
+  padding: 1rem;
+  border-radius: 1rem;
+  width: 100%;
+  min-width: 20rem;
+  background: none;
+}
+form .toggle-password,
+form .toggle-confirmed-password {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+          transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+form .form-btn {
+  width: 80%;
+  padding: 1rem;
+  cursor: pointer;
+  background: -webkit-gradient(linear, left top, right top, from(#03a9f4), color-stop(#5fbbc5), to(#03a9f4));
+  background: linear-gradient(to right, #03a9f4, #5fbbc5, #03a9f4);
+  border-radius: 2rem;
+  font-weight: 500;
+  font-size: 1.2rem;
+}
