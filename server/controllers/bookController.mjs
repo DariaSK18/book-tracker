@@ -2,7 +2,7 @@ import { catchAsync } from "../utils/catchAsync.mjs";
 import AppError from "../utils/AppError.mjs";
 import Book from "../models/book.mjs";
 import Collection from "../models/collection.mjs";
-// import Category from "../models/category.mjs";
+import ReadingLog from "../models/readingLog.mjs";
 // import User from "../models/user.mjs";
 import { sendResponse } from "../utils/helpers/sendResponse.mjs";
 // import { Op } from "sequelize";
@@ -151,6 +151,13 @@ export const getOneBook = catchAsync(async (req, res, next) => {
       id,
       user_id: userId,
     },
+    include: [
+      {
+        model: ReadingLog,
+        as: "readingLogs",
+        attributes: ["minutes_read", "pages_read"],
+      },
+    ],
   });
   if (!book) return next(new AppError("Book not found", 404));
   sendResponse(res, 200, book);
