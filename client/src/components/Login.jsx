@@ -4,6 +4,8 @@ import { useAuth } from "../context/AuthContext";
 // import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+// import Alert from "../components/Alert";
+import { useAlert } from "../context/AlertContext";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -12,7 +14,7 @@ export default function Login() {
 
   const navigate = useNavigate();
   const { login } = useAuth();
-  // const { showAlert } = useAlert();
+  const { showAlert } = useAlert();
   const location = useLocation();
 
   const from = location.state?.from?.pathname || "/";
@@ -24,9 +26,8 @@ export default function Login() {
       await login(email, password);
       navigate(from, { replace: true });
     } catch (err) {
-      console.log(err);
-
-      // showAlert("error", err.message);
+      // console.log(err);
+      showAlert("error", err.message);
     }
   };
   return (
